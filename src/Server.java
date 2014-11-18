@@ -8,14 +8,14 @@ public class Server<T> {
 	ArrayList<ClientThread> team1;
 	ArrayList<ClientThread> team2;
     public static void main(String[] args) throws IOException {
-    	Server<Message> temp = new Server<Message>(4444);
+    	Server<Message> temp = new Server<Message>(4444, 2);
     }
     
     
-    public Server(int port){
+    public Server(int port, int amount_of_players){
     	all_connections = new ArrayList<ClientThread>();
     	
-    	//Esablishing server socket scope
+    	//Establishing server socket scope
         ServerSocket ss = null;
         try {
         	
@@ -23,14 +23,16 @@ public class Server<T> {
             ss = new ServerSocket(port);
             
             //lets a certain amount of players connect
-            int player_size = 5;
-            while(player_size-- != 0){
-            	System.out.println("connection " + Integer.toString(4-player_size));
+
+            while(amount_of_players-- != 0){
+            	System.out.println("connection " );
             	Socket player_connect = ss.accept();
             	ClientThread t = new ClientThread(player_connect);
             	all_connections.add(t);
-            	t.run();
+            	t.start();
+            	System.out.println("here");
             }
+            
             
             
         } catch (IOException e) {
@@ -50,7 +52,21 @@ public class Server<T> {
         
         
     }
-}
+    
+    public <T> void sendToTeamOne(T object){
+    	
+    }
+    
+    public <T> void sendToTeamTwo(T yhing){
+    	
+    }
+
+	public <T> void sendToAll(T object){
+		for(ClientThread i: all_connections){
+			i.messageClient(object);
+		}
+	}
+
 
 class ClientThread<T> extends Thread{
 	Socket my_socket;
@@ -74,7 +90,10 @@ class ClientThread<T> extends Thread{
 		while(true){
 			try{
 			
-			Message msg = (Message) input.readObject();
+			T broadcast = (T) input.readObject();
+			Message msg = (Message) broadcast;
+			
+			sendToAll(broadcast);
 			System.out.println(msg.getMessage());
 			
 			}
@@ -82,6 +101,14 @@ class ClientThread<T> extends Thread{
 				System.err.println(e.getMessage());
 				break;
 			}
+		}
+	}
+	
+	public void messageClient(T object){
+		try {
+			output.writeObject(object);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -98,7 +125,9 @@ class ClientThread<T> extends Thread{
 		}catch(Exception e){};
 		
 	}
+	
 }
 
+}
 
 

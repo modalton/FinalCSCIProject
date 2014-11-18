@@ -5,13 +5,14 @@ import java.util.Scanner;
 public class Client {
 	String hostName = "localhost";
     
-    Socket connection = null;
+    
     
     
     
     
     public static void main(String[] args) throws IOException {
     	Client temp = new Client(4444);
+    	
     }
     
     Client(int port){
@@ -19,7 +20,7 @@ public class Client {
         try {
         	
         	//Server i/o connections
-			connection = new Socket(hostName, port);
+			Socket connection = new Socket(hostName, port);
 			
 			
 			//Output and input streams to server
@@ -31,7 +32,7 @@ public class Client {
 			
 			//Thread for just listening the whole time
 			ListenFromServer all_recieving = new ListenFromServer(recievefromserver);
-			//all_recieving.start();
+			all_recieving.start();
 			
 			//Loop to send messages whenver user chooses
 			Scanner rawinput = new Scanner(System.in);
@@ -47,10 +48,6 @@ public class Client {
 			}
 			
 			
-			
-			
-			
-			
 			connection.close();
 			
 		} catch (UnknownHostException e) {
@@ -62,9 +59,7 @@ public class Client {
         
     	}
     
-    public void sendtoserver(String text, Socket s){
-    	
-    }
+
 }
 
 class ListenFromServer extends Thread{
@@ -81,6 +76,7 @@ class ListenFromServer extends Thread{
 			try{
 				
 			Message msg = (Message) passedvalue.readObject();
+			
 			System.out.println(msg.getMessage());
 			
 			}
