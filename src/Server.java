@@ -53,12 +53,17 @@ public class Server<T> {
         
     }
     
+    //Self explanitory functions
     public <T> void sendToTeamOne(T object){
-    	
+    	for(ClientThread i: team1){
+			i.messageClient(object);
+		}
     }
     
-    public <T> void sendToTeamTwo(T yhing){
-    	
+    public <T> void sendToTeamTwo(T object){
+    	for(ClientThread i: team2){
+			i.messageClient(object);
+		}
     }
 
 	public <T> void sendToAll(T object){
@@ -76,10 +81,12 @@ class ClientThread<T> extends Thread{
 	ClientThread (Socket passed_socket){
 		my_socket = passed_socket;
 		
+		//Store streams from socket passed to us
 		try{
 			output = new ObjectOutputStream(my_socket.getOutputStream());
 			input = new ObjectInputStream(my_socket.getInputStream());
-		}catch(Exception e){
+		}
+		catch(Exception e){
 			System.err.println(e.getMessage());
 		}
 	}
@@ -89,13 +96,11 @@ class ClientThread<T> extends Thread{
 	public void run(){
 		while(true){
 			try{
-			
-			T broadcast = (T) input.readObject();
-			Message msg = (Message) broadcast;
-			
-			sendToAll(broadcast);
-			System.out.println(msg.getMessage());
-			
+				
+				Message msg = (Message) input.readObject();
+				sendToAll(msg);
+				System.out.println(msg.getMessage());
+				
 			}
 			catch(Exception e){
 				System.err.println(e.getMessage());
@@ -113,7 +118,7 @@ class ClientThread<T> extends Thread{
 	}
 	
 	//safely get rid of all connections. no need to look over
-	public void close(){
+	public void closeSafely(){
 		try{
 			if(output!=null){output.close();}
 		}catch(Exception e){};

@@ -62,6 +62,7 @@ public class Client {
 
 }
 
+
 class ListenFromServer extends Thread{
 	ObjectInputStream passedvalue;
 	
@@ -76,7 +77,6 @@ class ListenFromServer extends Thread{
 			try{
 				
 			Message msg = (Message) passedvalue.readObject();
-			
 			System.out.println(msg.getMessage());
 			
 			}
