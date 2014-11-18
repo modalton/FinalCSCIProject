@@ -22,15 +22,14 @@ public class Server<T> {
         	//make server socket based on port number passed in
             ss = new ServerSocket(port);
             
-            //lets a certain amount of players connect
-
+            //lets a certain amount of players connect and starts thier connections thread
             while(amount_of_players-- != 0){
-            	System.out.println("connection " );
             	Socket player_connect = ss.accept();
+            	System.out.println("connection made" );
             	ClientThread t = new ClientThread(player_connect);
             	all_connections.add(t);
             	t.start();
-            	System.out.println("here");
+            	
             }
             
             
