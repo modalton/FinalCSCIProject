@@ -8,7 +8,7 @@ public class Server<T> {
 	ArrayList<ClientThread> team1;
 	ArrayList<ClientThread> team2;
     public static void main(String[] args) throws IOException {
-    	Server<Message> temp = new Server<Message>(4444, 2);
+    	Server<Message> temp = new Server<Message>(4444, 4);
     }
     
     
@@ -96,9 +96,9 @@ class ClientThread<T> extends Thread{
 		while(true){
 			try{
 				
-				Message msg = (Message) input.readObject();
+				T msg = (T) input.readObject();
 				sendToAll(msg);
-				System.out.println(msg.getMessage());
+				
 				
 			}
 			catch(Exception e){
@@ -111,6 +111,7 @@ class ClientThread<T> extends Thread{
 	public void messageClient(T object){
 		try {
 			output.writeObject(object);
+			output.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -2,7 +2,7 @@ import java.io.Serializable;
 
 
 public class Message implements Serializable{
-	private String message;
+	private String message; 
 	
 	int deleteme;
 	
@@ -14,5 +14,6 @@ public class Message implements Serializable{
 	public String getMessage(){
 		return message;
 	}
+	
 
 }

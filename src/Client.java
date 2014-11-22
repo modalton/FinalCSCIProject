@@ -2,20 +2,11 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
  
-public class Client {
+public class Client<T, P extends ClientProcessInterface<Message>> {
 	String hostName = "localhost";
     
     
-    
-    
-    
-    
-    public static void main(String[] args) throws IOException {
-    	Client temp = new Client(4444);
-    	
-    }
-    
-    Client(int port){
+    Client(int port, P panel ){
         
         try {
         	
@@ -30,25 +21,33 @@ public class Client {
 			
 			
 			
-			//Thread for just listening the whole time
-			ListenFromServer all_recieving = new ListenFromServer(recievefromserver);
+			//Make an input thread for monitoring listening stream the whole time
+			ListenFromServer all_recieving = new ListenFromServer(recievefromserver, panel);
 			all_recieving.start();
 			
+			
 			//Loop to send messages whenver user chooses
-			Scanner rawinput = new Scanner(System.in);
 			while(true){
 				try{
-					Message temp = new Message(rawinput.nextLine(),0);
-					if(temp.equals(".")){break;}
-					sendtoserver.writeObject(temp);
+					
+					if(panel.hasOutputObject()){
+						sendtoserver.writeObject(panel.processOutputObject());
+						
+					}
+					else{
+						System.out.print(".");
+						
+					}
 				}
 				catch(Exception e){
-					
+					System.err.println(e.getMessage());
+					System.out.print("su");
+					connection.close();
 				}
 			}
 			
 			
-			connection.close();
+			
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -57,17 +56,23 @@ public class Client {
 		}
         
         
+        
     	}
     
+    public void sendToServer(T object){
+    	
+    }
+    
 
-}
 
-
+    
 class ListenFromServer extends Thread{
-	ObjectInputStream passedvalue;
+	ObjectInputStream input;
+	P panel;
 	
-	ListenFromServer(ObjectInputStream original){
-		passedvalue = original;
+	ListenFromServer(ObjectInputStream original, P panel){
+		input = original;
+		this.panel = panel;
 	}
 	
 	
@@ -75,17 +80,21 @@ class ListenFromServer extends Thread{
 	public void run(){
 		while(true){
 			try{
-				
-			Message msg = (Message) passedvalue.readObject();
-			System.out.println(msg.getMessage());
+			
+			
+			panel.processInputObject( (Message) input.readObject());
+			
 			
 			}
 			catch(Exception e){
-				System.err.println(e.getMessage());
+				System.err.println(e.getCause());
 				break;
 			}
 		}
 	}
+	
+	
 }
 
+}
 
