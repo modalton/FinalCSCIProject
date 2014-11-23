@@ -100,7 +100,8 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		temp.setSize(800, 600);
 		temp.setVisible(true);
 		temp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		Client<String, ChatPanel> network = new Client<String, ChatPanel>(4444,test);
+		Client<Message, ChatPanel> network = new Client<Message, ChatPanel>(4444,test);
+	
 	}
 
 

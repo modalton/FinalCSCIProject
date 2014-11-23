@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
  
-public class Client<T, P extends ClientProcessInterface<Message>> {
+public class Client<T, P extends ClientProcessInterface<T>> {
 	String hostName = "localhost";
     
     
@@ -82,7 +82,7 @@ class ListenFromServer extends Thread{
 			try{
 			
 			
-			panel.processInputObject( (Message) input.readObject());
+			panel.processInputObject( (T) input.readObject());
 			
 			
 			}
