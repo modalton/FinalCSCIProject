@@ -16,7 +16,7 @@ public abstract class Server<T> {
     	//Establishing server socket scope
         ServerSocket ss = null;
         try {
-        	
+        	System.out.println("me");
         	//make server socket based on port number passed in
             ss = new ServerSocket(port);
             

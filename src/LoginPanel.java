@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -7,7 +9,7 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	JTextField username_input;
 	JComboBox teamchoice;
 	JButton sendmessage;
-	boolean hasmessage;
+	boolean hasmessage = false;
 	
 	LoginPanel(){
 		super();
@@ -40,17 +42,28 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		
 		add(finalgui);
 		
-		//actionlisteners to buttons to disable other 
+		//actionlisteners to button
+		sendmessage.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				hasmessage = true;
+			}
+			
+		});
 		
 	}
 	
 	
 	public static void main(String[] args){
 		JFrame temp = new JFrame();
-		temp.add(new LoginPanel());
+		LoginPanel ugga = new LoginPanel();
+		temp.add(ugga);
 		temp.setSize(300,200);
 		temp.setVisible(true);
 		temp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		Client<LoginMessage, LoginPanel> network = new Client<LoginMessage, LoginPanel>(4444,ugga);
 		
 	}
 
@@ -58,7 +71,8 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	@Override
 	public void processInputObject(LoginMessage object) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(object.desired_team);
+		hasmessage = false;
 		
 	}
 
@@ -66,13 +80,14 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	@Override
 	public boolean hasOutputObject() {
 		// TODO Auto-generated method stub
-		return false;
+		return hasmessage;
 	}
 
 
 	@Override
 	public LoginMessage processOutputObject() {
 		// TODO Auto-generated method stub
-		return null;
+		System.out.println(teamchoice.getSelectedItem().toString());
+		return new LoginMessage(teamchoice.getSelectedItem().toString());
 	}
 }
