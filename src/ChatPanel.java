@@ -81,7 +81,7 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		// TODO Auto-generated method stub
 		haveamessage = false;
 		String temp = userinput.getText();
-		System.out.println(temp);
+		System.out.println("\n" + temp);
 		return new Message(temp, 0);
 	}
 	

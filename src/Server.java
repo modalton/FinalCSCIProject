@@ -3,17 +3,15 @@ import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
-public class Server<T> {
-	ArrayList<ClientThread> all_connections;
-	ArrayList<ClientThread> team1;
-	ArrayList<ClientThread> team2;
-    public static void main(String[] args) throws IOException {
-    	Server<Message> temp = new Server<Message>(4444, 4);
-    }
+public abstract class Server<T> {
+	ArrayList<ClientThread<T>> all_connections;
+	ArrayList<ClientThread<T>> team1;
+	ArrayList<ClientThread<T>> team2;
+    
     
     
     public Server(int port, int amount_of_players){
-    	all_connections = new ArrayList<ClientThread>();
+    	all_connections = new ArrayList<ClientThread<T>>();
     	
     	//Establishing server socket scope
         ServerSocket ss = null;
@@ -40,7 +38,10 @@ public class Server<T> {
         }
 
         
-        while(true){}
+        while(true){
+        	
+        	
+        }
         
         	//ss.close();
 		   // clientSocket.close();
@@ -70,6 +71,8 @@ public class Server<T> {
 			i.messageClient(object);
 		}
 	}
+	
+	public abstract <T> void doServerAction(T object);
 
 
 class ClientThread<T> extends Thread{
@@ -96,8 +99,8 @@ class ClientThread<T> extends Thread{
 		while(true){
 			try{
 				
-				T msg = (T) input.readObject();
-				sendToAll(msg);
+				
+				doServerAction((T) input.readObject());
 				
 				
 			}
