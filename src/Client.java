@@ -35,8 +35,7 @@ public class Client<T, P extends ClientProcessInterface<T>> {
 						
 					}
 					else{
-						System.out.print(".");
-						
+						Thread.sleep(200);
 					}
 				}
 				catch(Exception e){
