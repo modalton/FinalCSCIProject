@@ -1,4 +1,3 @@
-
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,9 +13,9 @@ public abstract class Server<T> {
     
     
     
-    public Server(int port, ArrayList<ClientThread<T>> ac){
-    	all_connections = ac;
-    	total_players = new Integer(ac.size());
+    public Server(int port, int amount_of_players){
+    	all_connections = new ArrayList<ClientThread<T>>();
+    	total_players = new Integer(amount_of_players);
     	//Establishing server socket scope
         ServerSocket ss = null;
         try {
@@ -155,5 +154,3 @@ class ClientThread<T> extends Thread{
 }
 
 }
-
-
