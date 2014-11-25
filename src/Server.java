@@ -14,9 +14,9 @@ public abstract class Server<T> {
     
     
     
-    public Server(int port, int amount_of_players){
-    	all_connections = new ArrayList<ClientThread<T>>();
-    	total_players = new Integer(amount_of_players);
+    public Server(int port, ArrayList<ClientThread<T>> ac){
+    	all_connections = ac;
+    	total_players = new Integer(ac.size());
     	//Establishing server socket scope
         ServerSocket ss = null;
         try {
