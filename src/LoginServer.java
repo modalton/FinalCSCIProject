@@ -17,7 +17,7 @@ public class LoginServer extends Server<LoginMessage> {
 	
 	
 	@Override
-	public <T> void doServerAction(T object) {
+	public <T> void doServerAction(T object, ClientThread ct) {
 		// TODO Auto-generated method stub
 		sendToAll(object);
 	}
