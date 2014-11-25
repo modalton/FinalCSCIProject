@@ -40,7 +40,6 @@ public class Client<T, P extends ClientProcessInterface<T>> {
 				}
 				catch(Exception e){
 					System.err.println(e.getMessage());
-					System.out.print("su");
 					connection.close();
 				}
 			}

@@ -1,18 +1,22 @@
 
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.io.*;
 
 public abstract class Server<T> {
 	ArrayList<ClientThread<T>> all_connections;
-	ArrayList<ClientThread<T>> team1;
-	ArrayList<ClientThread<T>> team2;
+	List<ClientThread> team1 = Collections.synchronizedList(new ArrayList<ClientThread>());
+	List<ClientThread> team2 = Collections.synchronizedList(new ArrayList<ClientThread>());
+	
+	Integer total_players;
     
     
     
     public Server(int port, int amount_of_players){
     	all_connections = new ArrayList<ClientThread<T>>();
-    	
+    	total_players = new Integer(amount_of_players);
     	//Establishing server socket scope
         ServerSocket ss = null;
         try {
@@ -24,7 +28,7 @@ public abstract class Server<T> {
             while(amount_of_players-- != 0){
             	Socket player_connect = ss.accept();
             	System.out.println("connection made" );
-            	ClientThread t = new ClientThread(player_connect);
+            	ClientThread t = new ClientThread(player_connect, amount_of_players);
             	all_connections.add(t);
             	t.start();
             	
@@ -72,16 +76,30 @@ public abstract class Server<T> {
 		}
 	}
 	
+	
+	
+	public ClientThread<T> getClientByUsername(String name){
+		for(ClientThread<T> ct : all_connections){
+			if(name.equals(ct.username)){
+				return ct;
+			}
+		}
+		return null;
+	}
+	
 	public abstract <T> void doServerAction(T object);
 
 
 class ClientThread<T> extends Thread{
 	Socket my_socket;
+	String username;
+	Integer instance_number;
 	ObjectInputStream input;
 	ObjectOutputStream output;
 	
-	ClientThread (Socket passed_socket){
+	ClientThread (Socket passed_socket, int numberyouare){
 		my_socket = passed_socket;
+		instance_number = new Integer(numberyouare);
 		
 		//Store streams from socket passed to us
 		try{

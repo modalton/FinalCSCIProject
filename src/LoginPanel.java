@@ -88,6 +88,6 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	public LoginMessage processOutputObject() {
 		// TODO Auto-generated method stub
 		System.out.println(teamchoice.getSelectedItem().toString());
-		return new LoginMessage(teamchoice.getSelectedItem().toString());
+		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText());
 	}
 }
