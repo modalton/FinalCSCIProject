@@ -71,7 +71,13 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	@Override
 	public void processInputObject(LoginMessage object) {
 		// TODO Auto-generated method stub
-		System.out.println(object.desired_team);
+		System.out.println(object.desired_team + "  " + object.desired_username);
+		if(object.nametaken){
+			System.out.println("name taken");
+			}
+		else{
+			System.out.println("your new name is above");
+		}
 		hasmessage = false;
 		
 	}

@@ -1,3 +1,5 @@
+import java.awt.BorderLayout;
+
 import javax.swing.*;
 
 
@@ -7,12 +9,15 @@ public class MainClient extends JFrame{
 	
 	MainClient(){
 		super();
+		setLayout(new BorderLayout());
 		
 		login = new LoginPanel();
 		chat = new ChatPanel();
 		chat.username =  "NAME GOOD SIR";
 		
-		add(chat);
+		
+		add(chat, BorderLayout.CENTER);
+		add(login, BorderLayout.NORTH);
 		
 		setSize(500,500);
 		setVisible(true);
