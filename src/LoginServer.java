@@ -22,6 +22,8 @@ public class LoginServer extends Server<LoginMessage> {
 		sendToAll(object);
 	}
 
+	
+	
 	boolean CanIUseName(String name){
 		for(String s : all_usernames){
 			if(s.equals(name)){return false;}
