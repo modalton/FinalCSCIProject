@@ -7,6 +7,7 @@ public class LoginMessage implements Serializable{
 	
 	boolean nametaken = false;
 	boolean teamtaken = false;
+	//changes//
 	
 	String desired_team;
 	String desired_username;
