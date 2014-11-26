@@ -1,3 +1,4 @@
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,13 +24,12 @@ public class Sprite {
         return sprite;
     }
 
-    public static BufferedImage getSprite(int xGrid, int yGrid) {
-
+    public BufferedImage getSprite(int xGrid, int yGrid) {
         if (spriteSheet == null) {
             spriteSheet = loadSprite();
         }
 
-        return spriteSheet.getSubimage(xGrid *24 + 140, yGrid*112 + 50, 25, 40);
+        return spriteSheet.getSubimage(xGrid *24 + 134, yGrid*112 + 50, 25, 40);
     }
 
 }
