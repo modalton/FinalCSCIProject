@@ -9,11 +9,13 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	JTextField username_input;
 	JComboBox teamchoice;
 	JButton sendmessage;
+	JLabel nametaken;
 	boolean hasmessage = false;
+	String username;
 	
 	LoginPanel(){
 		super();
-		
+		//instantiate username label, combo box, and jbutton
 		username_input = new JTextField();
 		JLabel username_text = new JLabel("Username:");
 		
@@ -22,6 +24,9 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		teamchoice.addItem("Team 2");
 		
 		sendmessage = new JButton("Join Team");
+		
+		nametaken = new JLabel("Username Taken");
+		nametaken.setVisible(false);
 		
 		//jpanels to help formatting
 		JPanel bottompanel = new JPanel();
@@ -36,6 +41,7 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		//add final gui to main login panel
 		JPanel finalgui = new JPanel();
 		finalgui.setLayout(new BoxLayout(finalgui, BoxLayout.PAGE_AXIS));
+		finalgui.add(nametaken);
 		finalgui.add(centerpanel);
 		finalgui.add(bottompanel);
 		
@@ -49,6 +55,8 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				hasmessage = true;
+				sendmessage.setEnabled(false);
+				nametaken.setVisible(false);
 			}
 			
 		});
@@ -74,11 +82,14 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		System.out.println(object.desired_team + "  " + object.desired_username);
 		if(object.nametaken){
 			System.out.println("name taken");
+			nametaken.setVisible(true);
+			sendmessage.setEnabled(true);
 			}
 		else{
 			System.out.println("your new name is above");
+			username = new String(object.desired_username);
 		}
-		hasmessage = false;
+		
 		
 	}
 
@@ -93,7 +104,10 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	@Override
 	public LoginMessage processOutputObject() {
 		// TODO Auto-generated method stub
+		hasmessage = false;
 		System.out.println(teamchoice.getSelectedItem().toString());
+		String attempt_username = username_input.getText();
+		//username_input.setText("");
 		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText());
 	}
 }

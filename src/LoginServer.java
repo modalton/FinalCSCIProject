@@ -9,6 +9,7 @@ public class LoginServer extends Server<LoginMessage> {
 	
 	LoginServer(int port, int amount_of_players) {
 		super(port, amount_of_players);
+		System.out.println(all_usernames.size());
 		
 		
 		
@@ -22,12 +23,11 @@ public class LoginServer extends Server<LoginMessage> {
 		LoginMessage status = (LoginMessage) object;
 		if(all_usernames.contains(status.desired_username)){
 			status.nametaken = true;
-			ct.messageClient(status);
 		}
 		else{
 			all_usernames.add(status.desired_username);
-			ct.messageClient(status);
 		}
+		ct.messageClient(status);
 	}
 	
 
