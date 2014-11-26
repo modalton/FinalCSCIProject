@@ -18,6 +18,7 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 	
 	//user data
 	String username;
+	String team_choice;
 	int messages_sent;
 	
 	public ChatPanel(){
@@ -75,8 +76,15 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 	@Override
 	public void processInputObject(Message temp) {
 		// TODO Auto-generated method stub
-		groupchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
-		
+		if(temp.getRecipient().equals(team_choice)){
+			teamchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
+		}
+		if(temp.getRecipient().equals("group")){
+			groupchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
+		}
+		else{
+			
+		}
 	}
 
 	@Override
@@ -84,7 +92,13 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		// TODO Auto-generated method stub
 		haveamessage = false;
 		String temp = userinput.getText();
-		return new Message(temp, messages_sent++, username);
+		if(chatview.getSelectedIndex() == 0){
+			return new Message(temp, messages_sent++, username, "group");
+		}
+		else{
+			return new Message(temp, messages_sent++, username, team_choice);
+		}
+		
 	}
 	
 		@Override

@@ -59,6 +59,7 @@ public class MainClient extends JFrame{
 		
 		//set username for other clients and start them
 		chat.username = login.username;
+		chat.team_choice = login.teamchoice.getSelectedItem().toString();
 		client_chat.start();
 		
 		//switch card actions

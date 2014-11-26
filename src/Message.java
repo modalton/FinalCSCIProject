@@ -7,10 +7,11 @@ public class Message implements Serializable{
 	private String recipient;
 	int deleteme;
 	
-	public Message(String text, int number, String user){
+	public Message(String text, int number, String user, String recip){
 		message = text;
 		deleteme = number;
 		username = user;
+		recipient = recip;
 		
 	}
 	
@@ -20,6 +21,10 @@ public class Message implements Serializable{
 	
 	public String getUsername(){
 		return username;
+	}
+	
+	public String getRecipient(){
+		return recipient;
 	}
 
 
