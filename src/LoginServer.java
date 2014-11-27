@@ -9,6 +9,7 @@ public class LoginServer extends Server<LoginMessage> {
 	
 	LoginServer(int port, int amount_of_players) {
 		super(port, amount_of_players);
+		System.out.println(all_usernames.size());
 		
 		
 		
@@ -17,10 +18,18 @@ public class LoginServer extends Server<LoginMessage> {
 	
 	
 	@Override
-	public <T> void doServerAction(T object) {
+	public <T> void doServerAction(T object, ClientThread ct) {
 		// TODO Auto-generated method stub
-		sendToAll(object);
+		LoginMessage status = (LoginMessage) object;
+		if(all_usernames.contains(status.desired_username)){
+			status.nametaken = true;
+		}
+		else{
+			all_usernames.add(status.desired_username);
+		}
+		ct.messageClient(status);
 	}
+	
 
 	boolean CanIUseName(String name){
 		for(String s : all_usernames){

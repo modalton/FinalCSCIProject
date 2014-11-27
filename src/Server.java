@@ -4,36 +4,49 @@ import java.util.Collections;
 import java.util.List;
 import java.io.*;
 
-public abstract class Server<T> {
+public abstract class Server<T> extends Thread {
 	ArrayList<ClientThread<T>> all_connections;
 	List<ClientThread> team1 = Collections.synchronizedList(new ArrayList<ClientThread>());
 	List<ClientThread> team2 = Collections.synchronizedList(new ArrayList<ClientThread>());
 	
 	Integer total_players;
+	int port;
     
     
     
     public Server(int port, int amount_of_players){
     	all_connections = new ArrayList<ClientThread<T>>();
     	total_players = new Integer(amount_of_players);
+    	this.port = port; 	
+		    
+		    
+        	
+       
+        
+        
+    }
+    
+    public void run(){
     	//Establishing server socket scope
-        ServerSocket ss = null;
+    	ServerSocket ss = null;
+    	
         try {
-        	System.out.println("me");
+        	
         	//make server socket based on port number passed in
             ss = new ServerSocket(port);
             
             //lets a certain amount of players connect and starts thier connections thread
-            while(amount_of_players-- != 0){
+            while(total_players-- != 0){
             	Socket player_connect = ss.accept();
             	System.out.println("connection made" );
-            	ClientThread t = new ClientThread(player_connect, amount_of_players);
+            	ClientThread t = new ClientThread(player_connect, total_players);
             	all_connections.add(t);
             	t.start();
             	
             }
             
             
+            ss.close();
             
         } catch (IOException e) {
             System.err.println("Could not listen on port");
@@ -41,20 +54,11 @@ public abstract class Server<T> {
         }
 
         
-        while(true){
-        	
-        	
-        }
-        
-        	//ss.close();
-		   // clientSocket.close();
-		    //serverresponse.close();
-		    
-        	
-       
         
         
     }
+    
+   
     
     //Self explanitory functions
     public <T> void sendToTeamOne(T object){
@@ -86,7 +90,7 @@ public abstract class Server<T> {
 		return null;
 	}
 	
-	public abstract <T> void doServerAction(T object);
+	public abstract <T> void doServerAction(T object, ClientThread ct);
 
 
 class ClientThread<T> extends Thread{
@@ -117,7 +121,7 @@ class ClientThread<T> extends Thread{
 			try{
 				
 				
-				doServerAction((T) input.readObject());
+				doServerAction((T) input.readObject(), this);
 				
 				
 			}
