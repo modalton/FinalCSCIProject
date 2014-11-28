@@ -18,6 +18,8 @@ public class GameServer extends Server<GameMessage>{
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
 	boolean[] onBase;
+	boolean aBatting, bBatting;
+	boolean gameOver, aWins, bWins;
 	
 	GameMessage msg;
 	
@@ -33,6 +35,11 @@ public class GameServer extends Server<GameMessage>{
 		for (int i = 0; i < 3; i++){
 			onBase[i] = false;
 		}
+		aBatting = false;
+		bBatting = false;
+		gameOver = false;
+		aWins = false;
+		bWins = false;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -45,9 +52,11 @@ public class GameServer extends Server<GameMessage>{
 		inningChange = msg.changeIn;
 		pitChange = msg.changePit;
 		batChange = msg.changeBat;
+		aBatting = msg.aBat;
+		bBatting = msg.bBat;
 		
 		switch (sender){
-			case serverSender:
+			case serverSender: //When you receive a message from the server, it must be a new play
 				bX = -1;
 				bY = -1;
 				pX = -1;
@@ -76,6 +85,7 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void processPlay(){
+		inningChange = false;
 		if (bX == pX && bY == pY){
 			//Batting team hits a home run
 			updateBases(4);
@@ -100,41 +110,103 @@ public class GameServer extends Server<GameMessage>{
 			strikes++;
 			if (!(strikes < 3)){
 				changeBatter();
+				pitChange = false;
 				//pitcher stays
+			} else{
+				outs++; //Add an out
+				if (outs >= 3){ //Check if innings have to change
+					changeInning();
+				}
 			}
 		}
 		
 		//SendMessage
+		sendMessage();
 	}
 	
-	private void updateScore(){
-		
+	private void updateScore(int addScore){
+		if (aBatting)
+			scoreA = scoreA + addScore;
+		else if (bBatting)
+			scoreB = scoreB + addScore;
 	}
 	
 	private void updateBases(int advanceNum){ //Takes in a number to advance all players by
 		//Calls update score depending on if anyone gets to the homerun
-		
+		int addScore = 0;
+		if (onBase[2]){
+			if (advanceNum >= 1){
+				addScore++;
+				onBase[2] = false;
+			}
+		}
+		if (onBase[1]){
+			if (advanceNum == 1){
+				onBase[2] = true;
+				onBase[1] = false;
+			} else if (advanceNum > 1){
+				onBase[1] = false;
+				addScore++;
+			}
+		}
+		if(onBase[0]){
+			if(advanceNum == 1){
+				onBase[1] = true;
+				onBase[0] = false;
+			} else if (advanceNum == 2){
+				onBase[2] = true;
+				onBase[0] = false;
+			} else if (advanceNum > 2){
+				onBase[0] = false;
+				addScore++;
+			}
+		}
+		updateScore(addScore); //update the score
 	}
 	
-	private void changeInnings(){
+	private void changeInning(){ //9 innings in a regular game, maximum of 12 innings in extra
+		//Change who's batting
+		aBatting = !aBatting;
+		bBatting = !bBatting;
 		
+		inningChange = true;
+		
+		for (int i = 0; i < 3; i++){
+			onBase[i] = false;
+		}
+		
+		inning++;
+		
+		if (inning == 9){
+			if (scoreA != scoreB){
+				gameOver = true;
+				if (scoreA > scoreB)
+					aWins = true;
+				else
+					bWins = true;
+			}
+		}
 	}
 	
 	private void changeBatter(){
-		
+		//Reset the strike count
+		batChange = true;
+		strikes = 0;
 	}
 	
 	private void changePitcher(){
-		
+		pitChange = true;
 	}
 	
 	private void sendMessage(){
-		
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, isUp, scoreA, scoreB, base, inningChange, inning, pitChange, batChange, aBatting, bBatting, gameOver, aWins, bWins);
+		//Send the message
 	}
 
 	@Override
 	public <T> void doServerAction(T object) {
 		// TODO Auto-generated method stub
 		msg = (GameMessage) object;
+		readMessage();
 	}
 }

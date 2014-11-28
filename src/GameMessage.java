@@ -18,9 +18,11 @@ public class GameMessage implements Serializable{
 	public int inning;
 	public boolean changePit, changeBat;
 	public boolean isUp;
+	public boolean aBat, bBat;
+	public boolean gameOver, aWins, bWins;
 	
 	
-	public GameMessage (String sender, int x, int y, boolean isUp, int score1, int score2, int base, boolean inningChange, int inning, boolean pitChange, boolean batChange){
+	public GameMessage (String sender, int x, int y, boolean isUp, int score1, int score2, int base, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean bBatting, boolean gameOver, boolean aWins, boolean bWins){
 		msgSender = sender;
 		gridX = x;
 		gridY = y;
@@ -32,6 +34,18 @@ public class GameMessage implements Serializable{
 		this.inning = inning;
 		changePit = pitChange;
 		changeBat = batChange;
+		aBat = aBatting;
+		bBat = bBatting;
+		this.gameOver = gameOver;
+		this.aWins = aWins;
+		this.bWins = bWins;
+		
+		/*if (gameOver){
+			if (aWins){
+				
+			} else if (bWins){
+			}
+		}*/
 	}
 
 }
