@@ -177,13 +177,24 @@ public class GameServer extends Server<GameMessage>{
 		
 		inning++;
 		
-		if (inning == 9){
+		if (inning == 10){
 			if (scoreA != scoreB){
 				gameOver = true;
 				if (scoreA > scoreB)
 					aWins = true;
 				else
 					bWins = true;
+			}
+		} else if (inning == 13){
+			gameOver = true;
+			if (scoreA != scoreB){
+				if (scoreA > scoreB)
+					aWins = true;
+				else
+					bWins = true;
+			} else{
+				aWins = true;
+				bWins = true;
 			}
 		}
 	}
