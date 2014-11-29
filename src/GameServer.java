@@ -6,20 +6,20 @@ public class GameServer extends Server<GameMessage>{
 	private static final String serverSender = "SERVER";
 	private static final String batterSender = "BATTER";
 	private static final String pitcherSender = "PITCHER";
-	private static final int leeWayDouble = 1; //Change these to make the game easier or harder (smaller number is harder)
-	private static final int leeWaySingle = 2; 
+	
+	//Change these to make the game easier or harder (smaller number is harder)
+	private static final int leeWaySingle = 1; 
 	
 	String sender;
-	int bX, bY, pX, pY;
-	boolean isUp; 
+	int bX, bY, pX, pY; //grid positions of batter and pitcher
 	int scoreA, scoreB;
 	int base, inning; 
 	int strikes, outs;
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
-	boolean[] onBase;
-	boolean aBatting, bBatting;
-	boolean gameOver, aWins, bWins;
+	boolean[] onBase; // what base people are on
+	boolean aBatting;
+	boolean gameOver, aWins;
 	
 	GameMessage msg;
 	
@@ -36,24 +36,13 @@ public class GameServer extends Server<GameMessage>{
 			onBase[i] = false;
 		}
 		aBatting = false;
-		bBatting = false;
 		gameOver = false;
 		aWins = false;
-		bWins = false;
 		// TODO Auto-generated constructor stub
 	}
 	
 	private void readMessage(){
 		sender = msg.msgSender;
-		scoreA = msg.scoreA;
-		scoreB = msg.scoreB;
-		base = msg.bases;
-		inning = msg.inning;
-		inningChange = msg.changeIn;
-		pitChange = msg.changePit;
-		batChange = msg.changeBat;
-		aBatting = msg.aBat;
-		bBatting = msg.bBat;
 		
 		switch (sender){
 			case serverSender: //When you receive a message from the server, it must be a new play
@@ -67,13 +56,11 @@ public class GameServer extends Server<GameMessage>{
 			case batterSender:
 				bX = msg.gridX;
 				bY = msg.gridY;
-				isUp = msg.isUp;
 				receivedBat = true;
 				break;
 			case pitcherSender:
 				pX = msg.gridX;
 				pY = msg.gridY;
-				isUp = msg.isUp;
 				receivedPitch = true;
 				break;
 		}
@@ -86,26 +73,25 @@ public class GameServer extends Server<GameMessage>{
 	
 	private void processPlay(){
 		inningChange = false;
+		//if batter and pitcher choose exact same grid
 		if (bX == pX && bY == pY){
 			//Batting team hits a home run
 			updateBases(4);
 			changeBatter();
 			changePitcher();
-		} else if (bX > pX-leeWayDouble && bX < pX+leeWayDouble){ //Double
-			if (bY > pY-leeWayDouble && bY < pY+leeWayDouble){
-				//Update bases
-				updateBases(2);
-				changeBatter();
-				changePitcher();
-			}
-		} else if (bX > pX-leeWaySingle && bX < pX+leeWaySingle){ //Single
+		//
+		}
+		// if batter is within 1 squares away from hit
+		else if (bX > pX-leeWaySingle && bX < pX+leeWaySingle){ //Single
 			if (bY > pY-leeWaySingle && bY < pY+leeWaySingle){
 				//Update bases
 				updateBases(1);
 				changeBatter();
 				changePitcher();
 			}
-		} else{ //No hit
+		}
+		// not within 1 squares --> no hit
+		else{
 			//Update strikes
 			strikes++;
 			if (!(strikes < 3)){
@@ -127,19 +113,24 @@ public class GameServer extends Server<GameMessage>{
 	private void updateScore(int addScore){
 		if (aBatting)
 			scoreA = scoreA + addScore;
-		else if (bBatting)
+		else
 			scoreB = scoreB + addScore;
 	}
 	
-	private void updateBases(int advanceNum){ //Takes in a number to advance all players by
-		//Calls update score depending on if anyone gets to the homerun
+	//Takes in a number to advance all players by
+	private void updateBases(int advanceNum){ 
+		//Calls update score depending on if anyone gets to the home base
 		int addScore = 0;
+		
+		//if on 3rd base
 		if (onBase[2]){
 			if (advanceNum >= 1){
 				addScore++;
 				onBase[2] = false;
 			}
 		}
+		
+		//if on 2nd base
 		if (onBase[1]){
 			if (advanceNum == 1){
 				onBase[2] = true;
@@ -149,6 +140,8 @@ public class GameServer extends Server<GameMessage>{
 				addScore++;
 			}
 		}
+		
+		//if on 1st base
 		if(onBase[0]){
 			if(advanceNum == 1){
 				onBase[1] = true;
@@ -167,7 +160,6 @@ public class GameServer extends Server<GameMessage>{
 	private void changeInning(){ //9 innings in a regular game, maximum of 12 innings in extra
 		//Change who's batting
 		aBatting = !aBatting;
-		bBatting = !bBatting;
 		
 		inningChange = true;
 		
@@ -183,7 +175,7 @@ public class GameServer extends Server<GameMessage>{
 				if (scoreA > scoreB)
 					aWins = true;
 				else
-					bWins = true;
+					aWins = false;
 			}
 		} else if (inning == 13){
 			gameOver = true;
@@ -191,10 +183,9 @@ public class GameServer extends Server<GameMessage>{
 				if (scoreA > scoreB)
 					aWins = true;
 				else
-					bWins = true;
+					aWins = false;
 			} else{
 				aWins = true;
-				bWins = true;
 			}
 		}
 	}
@@ -210,14 +201,19 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, isUp, scoreA, scoreB, base, inningChange, inning, pitChange, batChange, aBatting, bBatting, gameOver, aWins, bWins);
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, true, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins);
 		//Send the message
 	}
 
+
 	@Override
-	public <T> void doServerAction(T object) {
+	public <T> void doServerAction(T object, ClientThread ct) {
 		// TODO Auto-generated method stub
 		msg = (GameMessage) object;
 		readMessage();
+
+		
 	}
+
+
 }
