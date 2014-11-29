@@ -11,7 +11,11 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements ClientProcessInterface<GameMessage>{
 	
 	private static final long serialVersionUID = 1L;
+	
+	//sprites
 	Vector<Sprite> all_sprites = new Vector<Sprite>();
+	
+	//global variables used for sending Game Message
 	boolean hasMessage;
 	boolean isBatting;
 	int x, y;
