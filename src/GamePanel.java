@@ -41,14 +41,15 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	}
 
 	//Add actionListener for pitcher/batter click in Batting Box
-	//Actoinlistner must toggle hasMessage
+	//ActionListener must toggle hasMessage
 	
 	@Override
 	public void processInputObject(GameMessage object) {
 		//Reads GameMessage
 		//Update scorebox and lineup panel depending on GameMessage from Sever
 		
-		isBatting = object.aBat;
+		//Extract information from message
+		isBatting = object.aBat; //etc.
 	}
 
 
