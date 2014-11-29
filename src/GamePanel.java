@@ -17,11 +17,22 @@ public class GamePanel extends JPanel{
 	
 	public GamePanel(){
 		super();
+		setLayout(null);
 		
 		JLabel label = new JLabel();
+		label.setBounds(200, 225, 200, 200);
 		add(label);
 		SpriteAnimation sa = new SpriteAnimation(label);
 		sa.start();
+		
+		ScorePanel sp = new ScorePanel();
+		sp.setBounds(300, 0, 100, 50);
+		add(sp);
+		
+		BatterGrid bg = new BatterGrid();
+		bg.setBounds(375, 275, 300, 300);
+		add(bg);
+		
 		//legacy
 		/*
 		Sprite spritefactory = new Sprite();
