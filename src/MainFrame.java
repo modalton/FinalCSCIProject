@@ -19,9 +19,14 @@ public class MainFrame extends JFrame {
 	
 	static ChatPanel chatPanel;
 	
+	//outer panel and it's 2 cards
 	static JPanel outerPanel;
-	static JPanel loginCard;
+	static LoginPanel loginCard;
 	static JPanel gameCard;
+	
+	Client<LoginMessage, LoginPanel> client_login;
+	Client<Message, ChatPanel> client_chat;
+
 	
 	//login/game card names
 	final static String LOGINCARD = "LOGIN";
@@ -35,10 +40,17 @@ public class MainFrame extends JFrame {
 		//panel initialization
 		outerPanel = new  JPanel(new CardLayout());
 		gameCard = new JPanel(new BorderLayout());
-		loginCard = new LoginPanel();
+		CardLayout cardl = (CardLayout) outerPanel.getLayout();
+		loginCard = new LoginPanel(outerPanel, cardl);
 		gamePanel = new GamePanel();
 		chatPanel = new ChatPanel();
 		//lineupPanel = new LineupPanel();
+		
+		
+		//initialize gui controllers and clients
+		client_login = new Client<LoginMessage, LoginPanel>(4444,loginCard);
+		client_chat = new Client<Message, ChatPanel>(4445, chatPanel);
+
 		
 		
 		//add panels to game card
@@ -52,12 +64,40 @@ public class MainFrame extends JFrame {
 		
 		//for right now just show game
 		CardLayout cl = (CardLayout)outerPanel.getLayout();
-		cl.show(outerPanel, GAMECARD);
+		cl.show(outerPanel, LOGINCARD);
 		
 		//add outer panel and make visible
 		add(outerPanel);
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		//for sake of modluarity constuctor contains only construciton and ClientCardInteraction defines handling of variables
+		ClientCardInteraction();
+
+	}
+	
+	void ClientCardInteraction(){
+
+		
+		client_login.start();
+		
+		//Can't start other clients until username from login panel is esatblished!!!
+		while(loginCard.username == null){
+			//sleep to free up cpu
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				break;
+			}
+		}
+		
+		//set username for other clients and start them
+		chatPanel.username = loginCard.username;
+		chatPanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
+		client_chat.start();
+		
+		//SWITCH TO GAME CARD HERE
 	}
 	
 	public static void main (String []args) {

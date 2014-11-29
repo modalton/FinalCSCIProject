@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,7 +14,7 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	boolean hasmessage = false;
 	String username;
 	
-	LoginPanel(){
+	LoginPanel(JPanel cardPanel, CardLayout cl){
 		super();
 		//instantiate username label, combo box, and jbutton
 		username_input = new JTextField();
@@ -57,6 +58,9 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 				hasmessage = true;
 				sendmessage.setEnabled(false);
 				nametaken.setVisible(false);
+				
+				//TEMPORARY -- should only switch to game when connection is established
+				cl.show(cardPanel, "GAME");
 			}
 			
 		});
@@ -64,17 +68,6 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	}
 	
 	
-	public static void main(String[] args){
-		JFrame temp = new JFrame();
-		LoginPanel ugga = new LoginPanel();
-		temp.add(ugga);
-		temp.setSize(300,200);
-		temp.setVisible(true);
-		temp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		Client<LoginMessage, LoginPanel> network = new Client<LoginMessage, LoginPanel>(4444,ugga);
-		
-	}
-
 
 	@Override
 	public void processInputObject(LoginMessage object) {
