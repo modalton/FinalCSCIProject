@@ -16,6 +16,10 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 	JButton sendmessage;
 	boolean haveamessage;
 	
+	//user data
+	String username;
+	String team_choice;
+	int messages_sent;
 	
 	public ChatPanel(){
 		super(new BorderLayout());
@@ -47,8 +51,9 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		this.add(bottombar, BorderLayout.SOUTH);
 		
 		
-		//set to false because we dont have a message ready to send
-		haveamessage = false;
+		//set to true to shoot off first message to serer with username
+		messages_sent = 0;
+		haveamessage = true;
 		
 		
 		//add actionlistener to jbutton. will set haveamessage to true so client thread will send message 
@@ -71,9 +76,15 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 	@Override
 	public void processInputObject(Message temp) {
 		// TODO Auto-generated method stub
-		System.out.println("here");
-		groupchat.append("\n"+ ((Message) temp).getMessage());
-		
+		if(temp.getRecipient().equals(team_choice)){
+			teamchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
+		}
+		if(temp.getRecipient().equals("group")){
+			groupchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
+		}
+		else{
+			
+		}
 	}
 
 	@Override
@@ -81,8 +92,13 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		// TODO Auto-generated method stub
 		haveamessage = false;
 		String temp = userinput.getText();
-		System.out.println("\n" + temp);
-		return new Message(temp, 0);
+		if(chatview.getSelectedIndex() == 0){
+			return new Message(temp, messages_sent++, username, "group");
+		}
+		else{
+			return new Message(temp, messages_sent++, username, team_choice);
+		}
+		
 	}
 	
 		@Override
@@ -91,18 +107,7 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		return haveamessage;
 	}
 		
-		
-	public static void main(String[] args){
-		//DELETE ME or put me in anohter file
-		ChatPanel test = new ChatPanel();
-		JFrame temp = new JFrame("Final");
-		temp.add(test);
-		temp.setSize(800, 600);
-		temp.setVisible(true);
-		temp.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		Client<Message, ChatPanel> network = new Client<Message, ChatPanel>(4444,test);
 	
-	}
 
 
 

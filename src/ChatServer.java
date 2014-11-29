@@ -11,8 +11,13 @@ public class ChatServer extends Server<Message>{
     }
 
 	@Override
-	public <T> void doServerAction(T object) {
+	public <T> void doServerAction(T object, ClientThread ct) {
 		// TODO Auto-generated method stub
+		Message first_msg = (Message) object;
+		if(first_msg.deleteme == 0){
+			System.out.print(ct.username);
+			ct.username = first_msg.getUsername(); return;
+		}
 		sendToAll(object);
 	}
 
