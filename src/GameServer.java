@@ -19,7 +19,7 @@ public class GameServer extends Server<GameMessage>{
 	boolean receivedPitch, receivedBat;
 	boolean[] onBase; // what base people are on
 	boolean aBatting;
-	boolean gameOver, aWins;
+	boolean gameOver, aWins, tieGame;
 	
 	GameMessage msg;
 	
@@ -38,6 +38,7 @@ public class GameServer extends Server<GameMessage>{
 		aBatting = false;
 		gameOver = false;
 		aWins = false;
+		tieGame = false;
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -185,7 +186,7 @@ public class GameServer extends Server<GameMessage>{
 				else
 					aWins = false;
 			} else{
-				aWins = true;
+				tieGame = true;
 			}
 		}
 	}
@@ -201,7 +202,7 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, true, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins);
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, true, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame);
 		//Send the message
 	}
 
