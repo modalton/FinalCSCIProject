@@ -9,6 +9,8 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 	//gui stuff
 	JTextArea groupchat;
 	JTextArea teamchat;
+	JScrollPane groupscroll;
+	JScrollPane teamscroll;
 	JTabbedPane chatview;
 	
 	//user gui input stuff
@@ -27,14 +29,16 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		//Create group/team text areas
 		groupchat = new JTextArea();
 		groupchat.setEditable(false);
+		groupscroll = new JScrollPane(groupchat);
+		
 		teamchat = new JTextArea();
 		teamchat.setEditable(false);
-		
+		teamscroll = new JScrollPane(teamchat);
 		
 		//create tabbed pane and add text areas
 		chatview = new JTabbedPane();
-		chatview.add("Group Chat", groupchat);
-		chatview.add("Team Chat", teamchat);
+		chatview.add("Group Chat", groupscroll);
+		chatview.add("Team Chat", teamscroll);
 		
 		
 		//create user input & send message button and add to minipanel
