@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		JLabel pitcherLabel = new JLabel();
 		
 		pitcherLabel.setBounds(300, 0, 200, 200);
-		pitcherLabel.setOpaque(false);
+		//pitcherLabel.setOpaque(false);
 		JLabel batterLabel = new JLabel();
 		batterLabel.setBounds(225,275,300,200);
 		
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		//Add action listener
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
-
+		setOpaque(false);
 		
 	}
 

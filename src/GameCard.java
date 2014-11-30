@@ -1,33 +1,39 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 
 public class GameCard extends JPanel {
-
+	BufferedImage background = null;
+	BufferedImage test;
 	public GameCard() {
 		super();
+		getBG();
 	}
 	
 	public GameCard(BorderLayout borderLayout) {
 		// TODO Auto-generated constructor stub
 		super(borderLayout);
+		getBG();
 	}
 	
-	public void paint(Graphics g) {
-		super.paint(g);
-		BufferedImage bg = getBG();
-		g.drawImage(bg, 0, 0, null);
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Dimension d = getSize();
+		g.drawImage(background, 0, 0, null);
+		
 		
 	}
 	
 	private BufferedImage getBG() {
-		BufferedImage background = null;
         try {
         	background = ImageIO.read(new File("src/Images/background_diamond.jpg"));
         } catch (IOException e) {
