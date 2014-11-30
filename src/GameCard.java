@@ -35,7 +35,7 @@ public class GameCard extends JPanel {
 	
 	private BufferedImage getBG() {
         try {
-        	background = ImageIO.read(new File("src/Images/background_diamond.jpg"));
+        	background = ImageIO.read(new File("src/Images/background_diamond.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

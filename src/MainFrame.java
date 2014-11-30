@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("Baseball Game");
 		
-		setSize(800,600);
+		setSize(700,700);
 		
 		
 		//panel initialization

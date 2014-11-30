@@ -54,7 +54,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		*/
 		
 		BatterGrid bg = new BatterGrid();
-		bg.setBounds(350, 300, 100, 100);
+		bg.setBounds(325, 325, 100, 100);
 		add(bg);
 		
 
