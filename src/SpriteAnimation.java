@@ -85,15 +85,17 @@ public class SpriteAnimation extends Thread{
 		}
 	}
 	public void run() {
-		for (int i = 0; i < sprites.length; i++){
-			render();
-			try {
-				sleep(70);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		while (true) {
+			for (int i = 0; i < sprites.length; i++){
+				render();
+				try {
+					sleep(70);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				update();
+	
 			}
-			update();
-
 		}
 	}
 

@@ -31,9 +31,13 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		super();
 		
 		JLabel label = new JLabel();
+		//JLabel label2 = new JLabel();
 		add(label);
-		SpriteAnimation sa = new SpriteAnimation(label);
+		//add(label2);
+		SpriteAnimation sa = new SpriteAnimation(label, false);
+		//SpriteAnimation sa2 = new SpriteAnimation(label2, true);
 		sa.start();
+		//sa2.start();
 		
 		//Add Batting Box
 		//Enable user input

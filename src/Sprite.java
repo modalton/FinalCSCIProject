@@ -8,8 +8,8 @@ import javax.imageio.ImageIO;
 public class Sprite {
 
     private static BufferedImage spriteSheets;
-    static boolean isBatter;
-    boolean alreadyDone = false; 
+    private static boolean isBatter;
+    private boolean alreadyDone = false; 
     
     public Sprite (boolean isBatter){
     	this.isBatter = isBatter;
@@ -24,9 +24,9 @@ public class Sprite {
         try {
         	String current_directory = System.getProperty("user.dir");
         	if (isBatter){
-        		sprites = ImageIO.read(new File("AAFP/src/Images/RBIBaseball94Sheet4.gif"));
+        		sprites = ImageIO.read(new File("src/Images/RBIBaseball94Sheet4.gif"));
         	} else {
-        		sprites = ImageIO.read(new File("AAFP/src/Images/RBIBaseball94Sheet1.gif"));
+        		sprites = ImageIO.read(new File("src/Images/RBIBaseball94Sheet1.gif"));
         	}
             /*sprites[0] = spriteBat;
             sprites[1] = spritePitch;*/
