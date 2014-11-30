@@ -46,7 +46,7 @@ public class MainClient extends JFrame{
 		
 		client_login.start();
 		
-		//Can't start other clients until username from login panel is esatblished!!!
+		//Can't start other clients until username from login panel is established!!!
 		while(login.username == null){
 			//sleep to free up cpu
 			try {

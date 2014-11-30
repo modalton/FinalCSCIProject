@@ -26,8 +26,14 @@ public class LoginServer extends Server<LoginMessage> {
 		// TODO Auto-generated method stub
 		LoginMessage status = (LoginMessage) object;
 		
-		CreateAccountCommand query = new CreateAccountCommand(server_lock, status.desired_username, status.attempted_password);
-		status.success_login = query.execute();
+		
+		if(status.newAccount){
+			CreateAccountCommand query = new CreateAccountCommand(server_lock, status.desired_username, status.attempted_password);
+			status.success_login = query.execute();
+		} else{
+			AccountLoginCommand query = new AccountLoginCommand(server_lock, status.desired_username, status.attempted_password);
+			status.success_login = query.execute();
+		}
 		
 		
 		
@@ -39,6 +45,7 @@ public class LoginServer extends Server<LoginMessage> {
 			all_usernames.add(status.desired_username);
 		}
 		//
+		
 		
 		
 		ct.messageClient(status);

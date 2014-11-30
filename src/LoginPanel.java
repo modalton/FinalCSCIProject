@@ -1,4 +1,6 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,10 +11,11 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	JTextField username_input;
 	JTextField userpass_input;
 	JComboBox teamchoice;
-	JButton sendmessage;
-	JLabel nametaken;
+	JButton sendmessage, createAccountButton;
+	JLabel loginFailed, accountCreated, accountNotCreated;
 	boolean hasmessage = false;
 	String username;
+	boolean creatingAccount = false;
 	
 	LoginPanel(){
 		super();
@@ -27,10 +30,20 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		teamchoice.addItem("Team 1");
 		teamchoice.addItem("Team 2");
 		
-		sendmessage = new JButton("Join Team");
+		createAccountButton = new JButton("              Create an Account              ");
+		sendmessage = new JButton("Login and Join Team");
 		
-		nametaken = new JLabel("Username Taken");
-		nametaken.setVisible(false);
+		loginFailed = new JLabel("Login Failed. Try Again.");
+		loginFailed.setForeground(Color.RED);
+		loginFailed.setVisible(false);
+		
+		accountNotCreated = new JLabel("Username exists. Please login or try again.");
+		accountNotCreated.setForeground(Color.RED);
+		accountNotCreated.setVisible(false);
+		
+		accountCreated = new JLabel("Account created. Please login.");
+		accountCreated.setForeground(Color.GREEN);
+		accountCreated.setVisible(false);
 		
 		//jpanels to help formatting
 		JPanel bottompanel = new JPanel();
@@ -49,23 +62,57 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		//add final gui to main login panel
 		JPanel finalgui = new JPanel();
 		finalgui.setLayout(new BoxLayout(finalgui, BoxLayout.PAGE_AXIS));
-		finalgui.add(nametaken);
+		
+		//AkshayAkshayAkshay
+		finalgui.add(accountNotCreated);
+		finalgui.add(accountCreated);
+		
+		finalgui.add(loginFailed);
 		finalgui.add(centerpanel);
+		
 		finalgui.add(under_centerpanel);
+		
+		//AKSHAYAKSHAYAKSHAY 
+		//createAccountButton.setPreferredSize(new Dimension(900, 30));
+		createAccountButton.setAlignmentX(under_centerpanel.CENTER_ALIGNMENT);
+		finalgui.add(createAccountButton);
+		
 		finalgui.add(bottompanel);
 		
 		
 		add(finalgui);
 		
+		//AKSHAYAKSHAYAKSHAY
+		//centerpanel.setMaximumSize(new Dimension(10, 200));
+	//	under_centerpanel.setMaximumSize(100);
+
 		//actionlisteners to button
 		sendmessage.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				creatingAccount = false;
 				hasmessage = true;
 				sendmessage.setEnabled(false);
-				nametaken.setVisible(false);
+				loginFailed.setVisible(false);
+				accountCreated.setVisible(false);
+				accountNotCreated.setVisible(false);
+			}
+			
+		});
+		
+		createAccountButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				creatingAccount = true;
+				hasmessage = true;
+				createAccountButton.setEnabled(false);
+				sendmessage.setEnabled(true);
+				loginFailed.setVisible(false);
+				accountCreated.setVisible(false);
+				accountNotCreated.setVisible(false);
 			}
 			
 		});
@@ -89,11 +136,19 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	public void processInputObject(LoginMessage object) {
 		// TODO Auto-generated method stub
 		System.out.println(object.desired_team + "  " + object.desired_username);
-		if(object.nametaken){
+		if(!object.success_login && !creatingAccount){
 			System.out.println("name taken");
-			nametaken.setVisible(true);
+			loginFailed.setVisible(true);
 			sendmessage.setEnabled(true);
-			}
+		} else if (!object.success_login && creatingAccount){
+			accountNotCreated.setVisible(true);
+			createAccountButton.setEnabled(true);
+		} else if (object.success_login && creatingAccount){
+			accountNotCreated.setVisible(false);
+			createAccountButton.setEnabled(true);
+			accountCreated.setVisible(true);
+			sendmessage.setEnabled(true);
+		}
 		else{
 			System.out.println("your new name is above");
 			username = new String(object.desired_username);
@@ -117,6 +172,6 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		System.out.println(teamchoice.getSelectedItem().toString());
 		String attempt_username = username_input.getText();
 		//username_input.setText("");
-		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText(), userpass_input.getText());
+		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText(), userpass_input.getText(), creatingAccount);
 	}
 }
