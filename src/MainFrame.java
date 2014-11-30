@@ -1,6 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -38,9 +43,10 @@ public class MainFrame extends JFrame {
 		
 		setSize(800,600);
 		
+		
 		//panel initialization
 		outerPanel = new  JPanel(new CardLayout());
-		gameCard = new JPanel(new BorderLayout());
+		gameCard = new GameCard(new BorderLayout());
 		CardLayout cardl = (CardLayout) outerPanel.getLayout();
 		loginCard = new LoginPanel(outerPanel, cardl);
 		gamePanel = new GamePanel();
@@ -60,6 +66,8 @@ public class MainFrame extends JFrame {
 		gameCard.add(chatPanel, BorderLayout.SOUTH);
 		//gameCard.add(lineupPanel, BorderLayout.SOUTH);
 		
+		
+		
 		//add cards to outer panel
 		outerPanel.add(loginCard, LOGINCARD);
 		outerPanel.add(gameCard, GAMECARD);
@@ -78,9 +86,9 @@ public class MainFrame extends JFrame {
 
 	}
 	
+	
 	void ClientCardInteraction(){
 
-		
 		client_login.start();
 		
 		//Can't start other clients until username from login panel is esatblished!!!
@@ -101,7 +109,7 @@ public class MainFrame extends JFrame {
 		
 		//SWITCH TO GAME CARD HERE
 	}
-	
+		
 	public static void main (String []args) {
 		MainFrame mf = new MainFrame();
 	}

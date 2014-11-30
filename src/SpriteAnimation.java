@@ -36,13 +36,13 @@ public class SpriteAnimation extends Thread{
 
 	public void render() {
 		BufferedImage pic = sprites[xSprite].getSprite(xSprite,ySprite);
-		BufferedImage resizedImage = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage resizedImage = new BufferedImage(150, 150, BufferedImage.TYPE_INT_ARGB);
 		
 		//Make the sprite transparent
 		GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = environment.getDefaultScreenDevice();
 		GraphicsConfiguration config = device.getDefaultConfiguration();
-		resizedImage = config.createCompatibleImage(200, 200, Transparency.BITMASK);
+		resizedImage = config.createCompatibleImage(100, 100, Transparency.BITMASK);
 		
 		
 		
@@ -50,7 +50,7 @@ public class SpriteAnimation extends Thread{
 		label.revalidate();
 		label.repaint();
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(pic, 0, 0, 200, 200, null);
+		g.drawImage(pic, 0, 0, 100, 100, null);
 		g.dispose();
 	}
 
@@ -67,17 +67,11 @@ public class SpriteAnimation extends Thread{
 			}
 		} else{
 			xSprite++;
-			if (xSprite == 13 && ySprite == 0){
+			if (xSprite >= 13 && ySprite == 0){
 				//xSprite = 0;
 				ySprite++;
 			}
-			if (xSprite == 22 && ySprite == 1){
-				try {
-					sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if (xSprite >= 22 && ySprite == 1){
 				xSprite = 0;
 				ySprite = 0;
 				
@@ -89,7 +83,7 @@ public class SpriteAnimation extends Thread{
 			for (int i = 0; i < sprites.length; i++){
 				render();
 				try {
-					sleep(70);
+					sleep(120);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

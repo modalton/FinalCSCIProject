@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -28,16 +29,35 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 
 	
 	public GamePanel(){
-		super();
+		super(null);
 		
-		JLabel label = new JLabel();
-		//JLabel label2 = new JLabel();
-		add(label);
-		//add(label2);
-		SpriteAnimation sa = new SpriteAnimation(label, false);
-		//SpriteAnimation sa2 = new SpriteAnimation(label2, true);
+		JLabel pitcherLabel = new JLabel();
+		
+		pitcherLabel.setBounds(300, 0, 200, 200);
+		pitcherLabel.setOpaque(false);
+		JLabel batterLabel = new JLabel();
+		batterLabel.setBounds(225,275,300,200);
+		
+		add(pitcherLabel);
+		add(batterLabel);
+
+		
+		SpriteAnimation sa = new SpriteAnimation(pitcherLabel, false);
+		SpriteAnimation sa2 = new SpriteAnimation(batterLabel, true);
 		sa.start();
-		//sa2.start();
+		sa2.start();
+		
+		/*
+		ScorePanel sp = new ScorePanel();
+		sp.setBounds(300, 0, 100, 50);
+		add(sp);
+		*/
+		
+		BatterGrid bg = new BatterGrid();
+		bg.setBounds(350, 300, 100, 100);
+		add(bg);
+		
+
 		
 		//Add Batting Box
 		//Enable user input
