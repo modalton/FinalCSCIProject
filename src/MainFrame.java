@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
 	
 	Client<LoginMessage, LoginPanel> client_login;
 	Client<Message, ChatPanel> client_chat;
+	Client<GameMessage, GamePanel> client_game;
 
 	
 	//login/game card names
@@ -47,9 +48,10 @@ public class MainFrame extends JFrame {
 		//lineupPanel = new LineupPanel();
 		
 		
-		//initialize gui controllers and clients
+		//initialize GUI controllers and clients
 		client_login = new Client<LoginMessage, LoginPanel>(4444,loginCard);
 		client_chat = new Client<Message, ChatPanel>(4445, chatPanel);
+		client_game = new Client<GameMessage, GamePanel>(4446, gamePanel);
 
 		
 		

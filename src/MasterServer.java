@@ -6,8 +6,10 @@ public class MasterServer {
 		
     	Server<LoginMessage> login = new LoginServer(4444, 4);
     	Server<Message> chat = new ChatServer(4445, 2);
+    	Server<GameMessage> game = new GameServer(4446, 4);
     	login.start();
     	chat.start();
+    	game.start();
     	
     	
     	
