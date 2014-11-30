@@ -2,10 +2,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class LoginServer extends Server<LoginMessage> {
 	List<String> all_usernames = Collections.synchronizedList(new ArrayList<String>());
+	ConcurrentHashMap logged_in_users = new ConcurrentHashMap();
+	
+	ReentrantLock server_lock = new ReentrantLock();
 	
 	LoginServer(int port, int amount_of_players) {
 		super(port, amount_of_players);
@@ -21,12 +26,29 @@ public class LoginServer extends Server<LoginMessage> {
 	public <T> void doServerAction(T object, ClientThread ct) {
 		// TODO Auto-generated method stub
 		LoginMessage status = (LoginMessage) object;
+		
+		CreateAccountCommand query = new CreateAccountCommand(server_lock, status.desired_username, status.attempted_password);
+		status.success_login = query.execute();
+		
+		
+		if(logged_in_users.containsKey(status.desired_username)){
+			status.nametaken = true;
+		}
+		else{
+			//Put code here to check if password is right
+		}
+		
+		
+		//PRE- SQL stuff
 		if(all_usernames.contains(status.desired_username)){
 			status.nametaken = true;
 		}
 		else{
 			all_usernames.add(status.desired_username);
 		}
+		//
+		
+		
 		ct.messageClient(status);
 	}
 	

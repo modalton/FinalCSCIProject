@@ -7,6 +7,7 @@ import javax.swing.*;
 
 public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMessage>{
 	JTextField username_input;
+	JTextField userpass_input;
 	JComboBox teamchoice;
 	JButton sendmessage;
 	JLabel nametaken;
@@ -15,9 +16,12 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	
 	LoginPanel(){
 		super();
-		//instantiate username label, combo box, and jbutton
+		//instantiate username/pass label, combo box, and jbutton
 		username_input = new JTextField();
 		JLabel username_text = new JLabel("Username:");
+		
+		userpass_input = new JTextField();
+		JLabel userpass_text = new JLabel("Password:");
 		
 		teamchoice = new JComboBox();
 		teamchoice.addItem("Team 1");
@@ -38,11 +42,16 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		centerpanel.add(username_text, BorderLayout.WEST);	
 		centerpanel.add(username_input, BorderLayout.CENTER);	
 		
+		JPanel under_centerpanel = new JPanel(new BorderLayout());
+		under_centerpanel.add(userpass_text, BorderLayout.WEST);	
+		under_centerpanel.add(userpass_input, BorderLayout.CENTER);	
+		
 		//add final gui to main login panel
 		JPanel finalgui = new JPanel();
 		finalgui.setLayout(new BoxLayout(finalgui, BoxLayout.PAGE_AXIS));
 		finalgui.add(nametaken);
 		finalgui.add(centerpanel);
+		finalgui.add(under_centerpanel);
 		finalgui.add(bottompanel);
 		
 		
@@ -108,6 +117,6 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		System.out.println(teamchoice.getSelectedItem().toString());
 		String attempt_username = username_input.getText();
 		//username_input.setText("");
-		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText());
+		return new LoginMessage(teamchoice.getSelectedItem().toString(), username_input.getText(), userpass_input.getText());
 	}
 }
