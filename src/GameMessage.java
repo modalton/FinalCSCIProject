@@ -13,7 +13,7 @@ public class GameMessage implements Serializable{
 	public String username, team_choice; //What's the username and the team_choice
 	public int gridX, gridY; //for the grid
 	public boolean firstMsg;
-	public int scoreA, scoreB;
+	public int strikes, outs, scoreA, scoreB;
 	public boolean changeIn;
 	public boolean []onBase;
 	public int inning;
@@ -39,7 +39,7 @@ public class GameMessage implements Serializable{
 	 * gameOver -->  boolean used to tell clients that the game is over
 	 * aWins --> boolean that tells client if team A won (only applicable if game over)
 	 */
-	public GameMessage (String sender, int x, int y, String batterSn, String pitcherSn, int score1, int score2, boolean []onBase, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean gameOver, boolean aWins, boolean tieGame, boolean firstMsg, String username, String team_choice){
+	public GameMessage (String sender, int x, int y, String batterSn, String pitcherSn, int strikes, int outs, int score1, int score2, boolean []onBase, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean gameOver, boolean aWins, boolean tieGame, boolean firstMsg, String username, String team_choice){
 		msgSender = sender;
 		
 		
@@ -49,7 +49,8 @@ public class GameMessage implements Serializable{
 		//only if your batter/pitcher is up
 		this.batterSn = batterSn;
 		this.pitcherSn = pitcherSn;
-		
+		this.strikes = strikes;
+		this.outs = outs;
 		scoreA = score1;
 		scoreB = score2;
 		this.onBase = onBase;
