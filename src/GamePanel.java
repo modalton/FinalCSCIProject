@@ -35,7 +35,10 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
 	ScorePanel sp;
+	
 	JPanel test;
+	DiamondPanel dp;
+
 	//user data
 	String username;
 	String team_choice;
@@ -78,11 +81,11 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		test.setVisible(false);
 		add(test);
 		
-		/*
-		DiamondPanel dp = new DiamondPanel();
-		dp.setBounds(600,0, 75, 75);
+		
+		dp = new DiamondPanel();
+		dp.setBounds(550,20, 100, 100);
 		add(dp);
-		*/
+		
 		
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
@@ -229,9 +232,17 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		sp.repaint();
 	    sp.revalidate();
 		sp.updateUI();
+		this.onBase = object.onBase;
+		if (this.onBase != null)
+			dp.baseChanged(onBase);
+		else {
+			System.out.println("ARG");
+		}
+
 		remove(sp);
 		sp.setBounds(0, 0, 700, 30);
 		add(sp);
+		
 		System.out.println("Reached the end of the GamePlay process input!");
 	}
 
