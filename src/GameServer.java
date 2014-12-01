@@ -58,6 +58,7 @@ public class GameServer extends Server<GameMessage>{
 	
 	private void readMessage(){
 		sender = msg.msgSender;
+		System.out.println("\n\n\n------------\nReceived a message from " + sender + "\n-----------\n\n");
 		
 		if (msg.firstMsg){ //Update the teams
 			if (msg.team_choice.equals("Team 2")){
@@ -102,6 +103,10 @@ public class GameServer extends Server<GameMessage>{
 			if (receivedBat && receivedPitch){
 				processPlay();
 			}
+		}
+		
+		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers){ //STARTS THE ANIMATIONS ONCE both teams are full
+			sendMessage();
 		}
 			
 	}
@@ -258,9 +263,10 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		firstMsg = false;
+		firstMsg = true;
 		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
 		//Send the message
+		firstMsg = false;
 		sendToAll(theMsg);
 	}
 

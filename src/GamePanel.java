@@ -28,6 +28,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean gameOver, aWins, tieGame;
 	boolean firstMsg;
 	boolean aBatting;
+	boolean isTeamA;
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
 
@@ -73,6 +74,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
+		
 		setOpaque(false);
 		
 		firstMsg = true;
@@ -80,19 +82,20 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 	}
 
-	//Add actionListener for pitcher/batter click in Batting Box
-	//ActionListener must toggle hasMessage
-	
 	@Override
 	public void processInputObject(GameMessage object) {
-		//Reads GameMessage
-		//Update scorebox and lineup panel depending on GameMessage from Sever
 		
 		//Extract information from message
-		isBatting = object.aBat; //etc.
 		
-		
-		
+		/*ANIMATIONS WILL NOT BEGIN UNTIL 
+		THERE IS AT LEAST ONE BATTER 
+		AND ONE PITCHER*/
+		if (object.msgSender.equals("SERVER")){ //Start the animations if there is a batter and pitcher connected to the server.
+			if(object.firstMsg){
+				pitcher.start();
+				batter.start();
+			}
+		}
 	}
 
 
@@ -111,9 +114,21 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		hasMessage = false;
 		GameMessage theMsg;
 
+		
 		//get info from batting/pitching grid
 		//make game message
 		//send message
+		
+		if(firstMsg){
+			System.out.println("FROM GamePanel, gamePanel.isTeamA = " + isTeamA);
+			
+			if (isTeamA)
+				isBatting = false; //isBatting is the same is aBatting
+			else
+				isBatting = true; //isBatting is the opposite of aBatting
+
+		}
+		
 		if (isBatting){
 			theMsg = new GameMessage("BATTER", x, y, "", "", scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
 		} else{
@@ -121,6 +136,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 
 		}
 		
+		firstMsg = false;
 		return theMsg;
 		
 	}
