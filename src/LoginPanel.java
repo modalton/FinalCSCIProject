@@ -100,6 +100,7 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 				loginFailed.setVisible(false);
 				accountCreated.setVisible(false);
 				accountNotCreated.setVisible(false);
+
 				cl.show(cardPanel, "GAME");
 			}
 		});
