@@ -4,7 +4,7 @@ import java.util.Scanner;
  
 public class Client<T, P extends ClientProcessInterface<T>> extends Thread {
 	String hostName = "localhost";
-	String username;
+	String username, team;
 	P panel;
 	int port;
     

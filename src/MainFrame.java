@@ -112,7 +112,6 @@ public class MainFrame extends JFrame {
 		gamePanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
 		
 		client_game.start();
-		
 		//SWITCH TO GAME CARD HERE
 	}
 		

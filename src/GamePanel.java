@@ -27,6 +27,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean[] onBase; // what base people are on
 	boolean gameOver, aWins;
 
+
 	
 	//user data
 	String username;
