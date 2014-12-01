@@ -1,6 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -36,11 +41,12 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("Baseball Game");
 		
-		setSize(800,600);
+		setSize(700,700);
+		
 		
 		//panel initialization
 		outerPanel = new  JPanel(new CardLayout());
-		gameCard = new JPanel(new BorderLayout());
+		gameCard = new GameCard(new BorderLayout());
 		CardLayout cardl = (CardLayout) outerPanel.getLayout();
 		loginCard = new LoginPanel(outerPanel, cardl);
 		gamePanel = new GamePanel();
@@ -60,6 +66,8 @@ public class MainFrame extends JFrame {
 		gameCard.add(chatPanel, BorderLayout.SOUTH);
 		//gameCard.add(lineupPanel, BorderLayout.SOUTH);
 		
+		
+		
 		//add cards to outer panel
 		outerPanel.add(loginCard, LOGINCARD);
 		outerPanel.add(gameCard, GAMECARD);
@@ -78,9 +86,9 @@ public class MainFrame extends JFrame {
 
 	}
 	
+	
 	void ClientCardInteraction(){
 
-		
 		client_login.start();
 		
 		//Can't start other clients until username from login panel is esatblished!!!
@@ -97,11 +105,16 @@ public class MainFrame extends JFrame {
 		//set username for other clients and start them
 		chatPanel.username = loginCard.username;
 		chatPanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
+		
 		client_chat.start();
 		
+		gamePanel.username = loginCard.username;
+		gamePanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
+		
+		client_game.start();
 		//SWITCH TO GAME CARD HERE
 	}
-	
+		
 	public static void main (String []args) {
 		MainFrame mf = new MainFrame();
 	}

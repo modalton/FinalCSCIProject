@@ -7,15 +7,15 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 
-    private static BufferedImage spriteSheets;
-    private static boolean isBatter;
+    private BufferedImage spriteSheets;
+    private boolean isBatter;
     private boolean alreadyDone = false; 
     
     public Sprite (boolean isBatter){
     	this.isBatter = isBatter;
     }
 
-    public static BufferedImage loadSprite() {
+    public BufferedImage loadSprite() {
 
         BufferedImage sprites = null;
     	/*BufferedImage spriteBat = null;
@@ -43,23 +43,34 @@ public class Sprite {
         }
 
         if (isBatter){
-	        if (xGrid >= 4 && !alreadyDone){
+	        if (xGrid >= 4){
 	        	xGrid = xGrid - 4;
 	        	alreadyDone = true;
 	        }
 	        
 	        if (xGrid >= 0 && xGrid < 4 && yGrid <= 1){
 	        	if (yGrid == 1){
-	        		return spriteSheets.getSubimage(414+xGrid*38, 153 + yGrid*90, 30, 90);
+	        		return spriteSheets.getSubimage(414+xGrid*38, 164 + yGrid*90, 30, 88);
 	        	} else
-	        	return spriteSheets.getSubimage(414+xGrid*38, 165 + yGrid*90, 30, 90);
+	        	return spriteSheets.getSubimage(414+xGrid*38, 168 + yGrid*90, 30, 90);
 	        }
 	        else {
 	        	alreadyDone = false;
-	        	return spriteSheets.getSubimage(435+xGrid*38, 153 + yGrid*90, 30, 90);
+	        	try {
+	        		if (xGrid < 7) {
+	        			return spriteSheets.getSubimage(435+xGrid*37, 153 + yGrid*90,32, 90);
+	        		}
+	        		else {
+	        			return spriteSheets.getSubimage(435+xGrid*37, 153 + yGrid*90,32, 90);
+	        		}
+	        	}
+	        	catch (Exception e) {
+	        		System.out.println("PROBLEM: (x,y) " + "(" + xGrid + "," + yGrid + ")" );
+	        		return null;
+	        	}
 	        }
         } else{
-        	 if (xGrid >= 13 && !alreadyDone){
+        	 if (xGrid >= 13){
  	        	xGrid = xGrid - 13;
  	        	alreadyDone = true;
  	        }
@@ -76,7 +87,13 @@ public class Sprite {
  	        }
  	        else {
  	        	alreadyDone = false;
-	        		return spriteSheets.getSubimage(382+xGrid*27, 155 + yGrid*60, 27, 50);
+ 	        	try {
+ 	        		return spriteSheets.getSubimage(382+xGrid*27, 155 + yGrid*60, 27, 50);
+ 	        	}
+ 	        	catch (Exception e) {
+	        		System.out.println("PITCHER: " + "PROBLEM: (x,y) " + "(" + xGrid + "," + yGrid + ")" );
+	        		return null;
+ 	        	}
  	        }
         }
     }

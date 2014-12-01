@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 
 //HANDLE THE ENTIRE GAME
 
@@ -15,11 +17,14 @@ public class GameServer extends Server<GameMessage>{
 	int scoreA, scoreB;
 	int base, inning; 
 	int strikes, outs;
+	String batterSn = "", pitcherSn = "";
+	boolean firstMsg;
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
 	boolean[] onBase; // what base people are on
 	boolean aBatting;
 	boolean gameOver, aWins, tieGame;
+	Vector<Vector<String>> teams = new Vector<Vector<String>>();
 	
 	GameMessage msg;
 	
@@ -39,35 +44,50 @@ public class GameServer extends Server<GameMessage>{
 		gameOver = false;
 		aWins = false;
 		tieGame = false;
+		
+		Vector<String> team1 = new Vector<String>();
+		Vector<String> team2 = new Vector<String>();
+		
+		teams.add(team1);
+		teams.add(team2);
 		// TODO Auto-generated constructor stub
 	}
 	
 	private void readMessage(){
 		sender = msg.msgSender;
 		
-		switch (sender){
-			case serverSender: //When you receive a message from the server, it must be a new play
-				bX = -1;
-				bY = -1;
-				pX = -1;
-				pY = -1;
-				receivedBat = false;
-				receivedPitch = false;
-				break;
-			case batterSender:
-				bX = msg.gridX;
-				bY = msg.gridY;
-				receivedBat = true;
-				break;
-			case pitcherSender:
-				pX = msg.gridX;
-				pY = msg.gridY;
-				receivedPitch = true;
-				break;
-		}
-		
-		if (receivedBat && receivedPitch){
-			processPlay();
+		if (msg.firstMsg){ //Update the teams
+			if (msg.team_choice.equals("Team2"))
+				teams.elementAt(1).add(msg.username);
+			else{
+				teams.elementAt(0).add(msg.username);
+			}
+		} else{
+
+			switch (sender){
+				case serverSender: //When you receive a message from the server, it must be a new play
+					bX = -1;
+					bY = -1;
+					pX = -1;
+					pY = -1;
+					receivedBat = false;
+					receivedPitch = false;
+					break;
+				case batterSender:
+					bX = msg.gridX;
+					bY = msg.gridY;
+					receivedBat = true;
+					break;
+				case pitcherSender:
+					pX = msg.gridX;
+					pY = msg.gridY;
+					receivedPitch = true;
+					break;
+			}
+
+			if (receivedBat && receivedPitch){
+				processPlay();
+			}
 		}
 			
 	}
@@ -202,7 +222,8 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, true, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame);
+		firstMsg = false;
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
 		//Send the message
 	}
 
