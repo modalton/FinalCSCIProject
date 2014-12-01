@@ -22,12 +22,16 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	int x, y;
 	int scoreA, scoreB;
 	int base, inning; 
-	int strikes, outs;
+	int strikes = 0, outs = 0;
 	boolean inningChange, pitChange, batChange;
 	boolean[] onBase; // what base people are on
 	boolean gameOver, aWins, tieGame;
 	boolean firstMsg;
 	boolean aBatting;
+	boolean isTeamA;
+	SpriteAnimation pitcher;
+	SpriteAnimation batter;
+	ScorePanel sp;
 
 	//user data
 	String username;
@@ -48,13 +52,13 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(batterLabel);
 
 		
-		SpriteAnimation sa = new SpriteAnimation(pitcherLabel, false);
-		SpriteAnimation sa2 = new SpriteAnimation(batterLabel, true);
-		sa.start();
-		sa2.start();
+		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
+		batter = new SpriteAnimation(batterLabel, true);
+/*		pitcher.start();
+		batter.start();*/
 		
 		
-		ScorePanel sp = new ScorePanel();
+		sp = new ScorePanel();
 		sp.setBounds(0, 0, 700, 30);
 		add(sp);
 		
@@ -71,6 +75,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
+		
 		setOpaque(false);
 		
 		firstMsg = true;
@@ -78,19 +83,31 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 	}
 
-	//Add actionListener for pitcher/batter click in Batting Box
-	//ActionListener must toggle hasMessage
-	
 	@Override
 	public void processInputObject(GameMessage object) {
-		//Reads GameMessage
-		//Update scorebox and lineup panel depending on GameMessage from Sever
 		
 		//Extract information from message
-		isBatting = object.aBat; //etc.
 		
+		/*ANIMATIONS WILL NOT BEGIN UNTIL 
+		THERE IS AT LEAST ONE BATTER 
+		AND ONE PITCHER*/
+		if(object.firstMsg){
+			pitcher.start();
+			batter.start();
+			System.out.println("THINKS SERVER IS SENDING FIRST MESSAGE");
+			//return;
+		}
 		
-		
+		sp.batterStrike(object.strikes);
+		sp.batterOut(object.outs);
+		sp.addScore(object.scoreA, object.scoreB);
+		sp.repaint();
+	    sp.revalidate();
+		sp.updateUI();
+		remove(sp);
+		sp.setBounds(0, 0, 700, 30);
+		add(sp);
+		System.out.println("Reached the end of the GamePlay process input!");
 	}
 
 
@@ -109,16 +126,29 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		hasMessage = false;
 		GameMessage theMsg;
 
+		
 		//get info from batting/pitching grid
 		//make game message
 		//send message
-		if (isBatting){
-			theMsg = new GameMessage("BATTER", x, y, "", "", scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
-		} else{
-			theMsg = new GameMessage("PITCHER", x, y, "", "", scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+		
+		if(firstMsg){
+			System.out.println("FROM GamePanel, gamePanel.isTeamA = " + isTeamA);
+			
+			if (isTeamA)
+				isBatting = false; //isBatting is the same is aBatting
+			else
+				isBatting = true; //isBatting is the opposite of aBatting
 
 		}
 		
+		if (isBatting){
+			theMsg = new GameMessage("BATTER", x, y, "", "", strikes, outs, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+		} else{
+			theMsg = new GameMessage("PITCHER", x, y, "", "", strikes, outs, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+
+		}
+		
+		firstMsg = false;
 		return theMsg;
 		
 	}

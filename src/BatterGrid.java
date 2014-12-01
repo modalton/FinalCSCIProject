@@ -121,6 +121,11 @@ public class BatterGrid extends JPanel
 			gp.x = clickedPanel.x;
 			gp.y = clickedPanel.y;
 			
+			if (gp.isBatting)
+				System.out.println("X and Y coordinates selected for batter (in battergrid)");
+			else
+				System.out.println("X and Y coordinates selected for pitcher (in battergrid)");
+
 			gp.hasMessage = true;
 			
 			

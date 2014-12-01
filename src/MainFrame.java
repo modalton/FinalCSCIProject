@@ -111,6 +111,12 @@ public class MainFrame extends JFrame {
 		gamePanel.username = loginCard.username;
 		gamePanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
 		
+		//SET BOOLEAN IN GAMEPANEL SO THAT client CAN KNOW IF HE'S BATTING OR NOT
+		if (gamePanel.team_choice.equals("Team 1")){
+			gamePanel.isTeamA = true;
+		} else
+			gamePanel.isTeamA = false;
+		
 		client_game.start();
 		//SWITCH TO GAME CARD HERE
 	}

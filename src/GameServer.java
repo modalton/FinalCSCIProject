@@ -8,17 +8,20 @@ public class GameServer extends Server<GameMessage>{
 	private static final String serverSender = "SERVER";
 	private static final String batterSender = "BATTER";
 	private static final String pitcherSender = "PITCHER";
+	private static final int maxPlayers = 2;
+
 	
 	//Change these to make the game easier or harder (smaller number is harder)
 	private static final int leeWaySingle = 1; 
 	
 	String sender;
 	int bX, bY, pX, pY; //grid positions of batter and pitcher
-	int scoreA, scoreB;
+	private int scoreA, scoreB;
 	int base, inning; 
 	int strikes, outs;
-	String batterSn = "", pitcherSn = "";
-	boolean firstMsg;
+	String batterSn = null, pitcherSn = null;
+	int batterIndex, pitcherIndex;
+	boolean firstMsg = true;
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
 	boolean[] onBase; // what base people are on
@@ -55,15 +58,27 @@ public class GameServer extends Server<GameMessage>{
 	
 	private void readMessage(){
 		sender = msg.msgSender;
+		System.out.println("\n\n\n------------\nReceived a message from " + sender + "\n-----------\n\n");
 		
 		if (msg.firstMsg){ //Update the teams
-			if (msg.team_choice.equals("Team2"))
+			if (msg.team_choice.equals("Team 2")){
 				teams.elementAt(1).add(msg.username);
+				if (batterSn == null){
+					batterSn = msg.username; 
+					batterIndex = 0; //Used to iterate through the teams vector to get the next batter
+					System.out.println("\n\n&&&*******&&&\nRECEIVED FIRST BATTER, name = " + batterSn + "\n&&&******&&&\n\n");
+				}
+				aBatting = false; //Away team bats first
+			}
 			else{
 				teams.elementAt(0).add(msg.username);
+				if (pitcherSn == null){
+					pitcherSn = msg.username;
+					pitcherIndex = 0; //Used to iterate through the vector to get the next pitcher
+					System.out.println("\n\n&&&*******&&&\nRECEIVED FIRST PITCHER, name = " + pitcherSn + "\n&&&******&&&\n\n");
+				}
 			}
 		} else{
-
 			switch (sender){
 				case serverSender: //When you receive a message from the server, it must be a new play
 					bX = -1;
@@ -77,17 +92,26 @@ public class GameServer extends Server<GameMessage>{
 					bX = msg.gridX;
 					bY = msg.gridY;
 					receivedBat = true;
+					System.out.println("In GameServer, batting selection received.");
 					break;
 				case pitcherSender:
 					pX = msg.gridX;
 					pY = msg.gridY;
 					receivedPitch = true;
+					System.out.println("In GameServer, pitching selection received.");
 					break;
 			}
 
 			if (receivedBat && receivedPitch){
+				System.out.println("About to process the play");
+				receivedBat = false;
+				receivedPitch = false;
 				processPlay();
 			}
+		}
+		
+		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers){ //STARTS THE ANIMATIONS ONCE both teams are full
+			sendMessage();
 		}
 			
 	}
@@ -103,31 +127,45 @@ public class GameServer extends Server<GameMessage>{
 		//
 		}
 		// if batter is within 1 squares away from hit
-		else if (bX > pX-leeWaySingle && bX < pX+leeWaySingle){ //Single
-			if (bY > pY-leeWaySingle && bY < pY+leeWaySingle){
+		else if (bX >= pX-leeWaySingle && bX <= pX+leeWaySingle){ //Single
+			if (bY >= pY-leeWaySingle && bY <= pY+leeWaySingle){
 				//Update bases
 				updateBases(1);
 				changeBatter();
 				changePitcher();
+			} else{
+				//Update strikes
+				strikes++;
+				if ((strikes >= 3)){
+					outs++;
+					if (outs >= 3){ //Check if innings have to change
+						changeInning();
+					} else {
+						changeBatter();
+						pitChange = false;
+					}
+					//pitcher stays
+				} 
 			}
 		}
 		// not within 1 squares --> no hit
 		else{
 			//Update strikes
 			strikes++;
-			if (!(strikes < 3)){
-				changeBatter();
-				pitChange = false;
-				//pitcher stays
-			} else{
-				outs++; //Add an out
+			if ((strikes >= 3)){
+				outs++;
 				if (outs >= 3){ //Check if innings have to change
 					changeInning();
+				} else {
+					changeBatter();
+					pitChange = false;
 				}
-			}
+				//pitcher stays
+			} 
 		}
 		
 		//SendMessage
+		System.out.println("PROCESSED PLAY!");
 		sendMessage();
 	}
 	
@@ -136,6 +174,8 @@ public class GameServer extends Server<GameMessage>{
 			scoreA = scoreA + addScore;
 		else
 			scoreB = scoreB + addScore;
+		
+		System.out.println("in update score ScoreA = " + scoreA + ", and ScoreB = " + scoreB);
 	}
 	
 	//Takes in a number to advance all players by
@@ -145,8 +185,8 @@ public class GameServer extends Server<GameMessage>{
 		
 		//if on 3rd base
 		if (onBase[2]){
-			if (advanceNum >= 1){
-				addScore++;
+			if (advanceNum >= 1){ //If advancing by more than 1 base
+				addScore++; //1 run in
 				onBase[2] = false;
 			}
 		}
@@ -154,8 +194,8 @@ public class GameServer extends Server<GameMessage>{
 		//if on 2nd base
 		if (onBase[1]){
 			if (advanceNum == 1){
-				onBase[2] = true;
-				onBase[1] = false;
+				onBase[2] = true; //On third base now
+				onBase[1] = false; //Not on first base anymore
 			} else if (advanceNum > 1){
 				onBase[1] = false;
 				addScore++;
@@ -175,6 +215,18 @@ public class GameServer extends Server<GameMessage>{
 				addScore++;
 			}
 		}
+		
+		if (advanceNum == 1){
+			onBase[0] = true;
+		} else if (advanceNum == 2){
+			onBase[1] = true;
+		} else if (advanceNum == 3){
+			onBase[2] = true;
+		} else if (advanceNum == 4){ //If there's a home-run, there's at least one run batted in.
+			addScore++;
+		}
+		
+		System.out.println("Leaving update bases, AddSCORE = " + addScore);
 		updateScore(addScore); //update the score
 	}
 	
@@ -184,12 +236,16 @@ public class GameServer extends Server<GameMessage>{
 		
 		inningChange = true;
 		
-		for (int i = 0; i < 3; i++){
-			onBase[i] = false;
+		batterIndex = 0;
+		pitcherIndex = 0;
+		
+		for (int i = 0; i < 3; i++){ //Empty all the bases
+			onBase[i] = false; 
 		}
 		
 		inning++;
 		
+		//Check if game is over
 		if (inning == 10){
 			if (scoreA != scoreB){
 				gameOver = true;
@@ -215,16 +271,37 @@ public class GameServer extends Server<GameMessage>{
 		//Reset the strike count
 		batChange = true;
 		strikes = 0;
+		batterIndex++;
+		if (batterIndex >= maxPlayers){ 
+			batterIndex = 0;
+		}
+		if (aBatting){//Team 1 batting
+			batterSn = teams.elementAt(0).get(batterIndex);
+			System.out.println("New batter = " + batterSn);
+		} else {
+			batterSn = teams.elementAt(1).get(batterIndex);
+			System.out.println("New batter = " + batterSn);
+		}
 	}
 	
 	private void changePitcher(){
 		pitChange = true;
+		pitcherIndex++;
+		if (pitcherIndex >= maxPlayers){ 
+			pitcherIndex = 0;
+		}
+		if (aBatting){//Team 1 batting
+			pitcherSn = teams.elementAt(1).get(pitcherIndex);
+		} else {
+			pitcherSn = teams.elementAt(0).get(pitcherIndex);
+		}
 	}
 	
 	private void sendMessage(){
-		firstMsg = false;
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, strikes, outs, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
 		//Send the message
+		firstMsg = false;
+		sendToAll(theMsg);
 	}
 
 

@@ -5,7 +5,7 @@ import java.awt.GridBagLayout;
 import javax.swing.*;
 
 public class ScorePanel extends JPanel
-	{
+{
 	int homescoreint, awayscoreint, inningint, outint, strikeint, ballint, battersScoring;
 	boolean homeUp, onfirst, onsecond, onthird, first, second, third;
 	JButton homescore, awayscore, strikesballs, outs;
@@ -22,36 +22,36 @@ public class ScorePanel extends JPanel
 		onfirst = false;
 		onsecond = false;
 		onthird=false;
-		
-		
+
+
 		setBackground(Color.GRAY);
 		JLabel hometeam = new JLabel("HOME  ");
 		hometeam.setForeground(Color.white);
-		
+
 		homescore= new JButton(homescoreint + "");
 		homescore.setForeground(Color.red);
 		//homescore.setEnabled(false);
-		
+
 		JLabel awayteam = new JLabel("AWAY  ");
 		awayteam.setForeground(Color.white);
-		
-		
+
+
 		awayscore = new JButton(awayscoreint + "");
 		awayscore.setForeground(Color.blue);
 		//awayscore.setEnabled(false);
-		
+
 		//special JLabel
 		inning = new JLabel("Inning: " + inningint);
 		inning.setForeground(Color.white);
-		
+
 		strikesballs= new JButton(ballint + "-" + strikeint);
 		strikesballs.setBackground(Color.white);
-		
+
 		outs= new JButton(outint + " OUT");
 		outs.setBackground(Color.white);
-		
-		
-		
+
+
+
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		add(hometeam);
 		add(homescore);
@@ -61,15 +61,15 @@ public class ScorePanel extends JPanel
 		add(inning);
 		add(strikesballs);
 		add(outs);
-		
-		
+
+
 	}
-	
-	public void batterOut()
+
+	public void batterOut(int numouts)
 	{
 		//update all the string variables and increase number of outs
-		
-		if(outint==2)
+
+		/*if(outint==2)
 		{
 			outint=0;
 			inningChange();
@@ -78,29 +78,37 @@ public class ScorePanel extends JPanel
 		{
 			outint++; 
 			strikeint=0;
-			ballint=0;
-			strikesballs.setText(ballint + "-" + strikeint);
-			outs.setText(outint + " OUT");
-		}
+			ballint=0;*/
+		//strikesballs.setText(ballint + "-" + strikeint);
+		//String numOuts = String.valueOf(numouts);
+		outs.setText(numouts + " OUT");
+		repaint();
+		revalidate();
+		updateUI();
+
+		//}
 	}
-	
-	public void batterStrike()
+
+	public void batterStrike(int strikes)
 	{
 		//update all the string variables and leave number of outs
-		if(strikeint==2)
+		/*if(strikeint==2)
 		{
 			batterOut();
 			strikesballs.setText(ballint + "-" + strikeint);
 			//outs.setText(outint + " OUT");
 		}
 		else
-		{	
-			strikeint++;
-			strikesballs.setText(ballint + "-" + strikeint);
-			//outs.setText(outint + " OUT");
-		}
+		{*/	
+		//strikeint++;
+		strikesballs.setText(ballint + "-" + strikes);
+		repaint();
+		revalidate();
+		updateUI();
+		//outs.setText(outint + " OUT");
+		//}
 	}
-	
+
 	public void batterBall()
 	{
 		//update all the string variables and leave number of outs
@@ -109,18 +117,18 @@ public class ScorePanel extends JPanel
 		else
 		{
 			ballint++;
-			}
+		}
 	}
-	
+
 	public void inningChange()
 	{
 		strikeint=0;
 		ballint=0;
 		outint=0;
-		
+
 		strikesballs.setText(ballint + "-" + strikeint);
 		outs.setText(outint + " OUT");
-		
+
 		if(homeUp) //home team was batting
 		{//go to bottom of inning
 			homeUp=false;
@@ -152,7 +160,7 @@ public class ScorePanel extends JPanel
 			onfirst=false;
 		}
 		onfirst=true;
-		addScore(battersScoring);
+		//addScore(battersScoring);
 		battersScoring=0;
 	}
 	public void batterDouble()
@@ -173,7 +181,7 @@ public class ScorePanel extends JPanel
 			onthird=true;
 		}
 		onsecond=true;
-		addScore(battersScoring);
+		//addScore(battersScoring);
 		battersScoring=0;
 	}
 	public void batterTriple()
@@ -194,7 +202,7 @@ public class ScorePanel extends JPanel
 			onfirst=false;
 		}
 		onthird=true;
-		addScore(battersScoring);
+		//addScore(battersScoring);
 		battersScoring=0;
 	}
 	public void batterHR()
@@ -215,20 +223,15 @@ public class ScorePanel extends JPanel
 			onfirst=false;
 		}
 		battersScoring++;
-		addScore(battersScoring);
+		//addScore(battersScoring);
 		battersScoring=0;
 	}
-	public void addScore(int score)
+	public void addScore(int homeScore, int awayScore)
 	{
-		if(homeUp)//home team batting
-		{
-			homescoreint += score;
-			homescore.setText(homescoreint + "");
-		}
-		else//away team batting
-		{
-			awayscoreint += score;
-			awayscore.setText(awayscoreint + "");
-		}
+		homescore.setText(homeScore + "");
+		awayscore.setText(awayScore + "");
+		repaint();
+		revalidate();
+		updateUI();
 	}
-	}
+}
