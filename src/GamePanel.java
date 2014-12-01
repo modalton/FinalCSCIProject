@@ -28,6 +28,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean gameOver, aWins, tieGame;
 	boolean firstMsg;
 	boolean aBatting;
+	SpriteAnimation pitcher;
+	SpriteAnimation batter;
 
 	//user data
 	String username;
@@ -48,10 +50,10 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(batterLabel);
 
 		
-		SpriteAnimation sa = new SpriteAnimation(pitcherLabel, false);
-		SpriteAnimation sa2 = new SpriteAnimation(batterLabel, true);
-		sa.start();
-		sa2.start();
+		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
+		batter = new SpriteAnimation(batterLabel, true);
+/*		pitcher.start();
+		batter.start();*/
 		
 		
 		ScorePanel sp = new ScorePanel();
