@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 
 public class BatterGrid extends JPanel
 {
-	private JLabel[] grid;
+	private GridLabel[] grid;
 	private GridButtonHandler[] gridHandlers;
 	private boolean batting;
 	private GamePanel gp;
@@ -37,12 +37,14 @@ public class BatterGrid extends JPanel
 		//JPanel centerPanel=new JPanel();
 		//setOpaque(false);
 		setLayout(new GridLayout(3, 3));//creates the 9 buttons for the grid
-		grid=new JLabel[9];
+		grid=new GridLabel[9];
 		gridHandlers=new GridButtonHandler[9];
 		for (int i=0; i < 9; i++) 
 		{
 			
-			grid[i]=new JLabel("");
+			grid[i]=new GridLabel("");
+			grid[i].x = i % 3;
+			grid[i].y = (int)(i / 3);
 			grid[i].setOpaque(true);
 			gridHandlers[i]=new GridButtonHandler();
 			grid[i].addMouseListener(gridHandlers[i]);
@@ -91,7 +93,7 @@ public class BatterGrid extends JPanel
 		{
 			
 			//Get button pressed
-			JLabel clickedPanel = (JLabel) e.getSource();
+			GridLabel clickedPanel = (GridLabel) e.getSource();
 			
 		
 		
@@ -115,6 +117,11 @@ public class BatterGrid extends JPanel
 				clickedPanel.setBackground(Color.yellow);
 			}
 			
+			//set x and y in GamePanel then set has message to true
+			gp.x = clickedPanel.x;
+			gp.y = clickedPanel.y;
+			
+			gp.hasMessage = true;
 			
 			
 		}
