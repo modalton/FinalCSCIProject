@@ -105,7 +105,13 @@ public class MainFrame extends JFrame {
 		//set username for other clients and start them
 		chatPanel.username = loginCard.username;
 		chatPanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
+		
 		client_chat.start();
+		
+		gamePanel.username = loginCard.username;
+		gamePanel.team_choice = loginCard.teamchoice.getSelectedItem().toString();
+		
+		client_game.start();
 		
 		//SWITCH TO GAME CARD HERE
 	}

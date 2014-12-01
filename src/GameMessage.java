@@ -40,27 +40,32 @@ public class GameMessage implements Serializable{
 	 */
 	public GameMessage (String sender, int x, int y, boolean isUp, int score1, int score2, boolean []onBase, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean gameOver, boolean aWins, boolean tieGame){
 		msgSender = sender;
+		
+		
 		gridX = x;
 		gridY = y;
+		
+		//only if your batter/pitcher is up
 		this.isUp = isUp;
+		
 		scoreA = score1;
 		scoreB = score2;
 		this.onBase = onBase;
+		
+		//at end of inning
 		changeIn = inningChange;
 		this.inning = inning;
 		changePit = pitChange;
 		changeBat = batChange;
+		
+		
 		aBat = aBatting;
+		
+		//when game is over
 		this.gameOver = gameOver;
 		this.aWins = aWins;
 		this.tieGame = tieGame;
 		
-		/*if (gameOver){
-			if (aWins){
-				
-			} else if (bWins){
-			}
-		}*/
 	}
 
 }

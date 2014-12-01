@@ -25,12 +25,14 @@ public class BatterGrid extends JPanel
 	private JLabel[] grid;
 	private GridButtonHandler[] gridHandlers;
 	private boolean batting;
+	private GamePanel gp;
 	
 	
-	public BatterGrid() 
+	public BatterGrid(GamePanel gp) 
 	{
 		setPreferredSize(new Dimension(100, 100));
 		
+		this.gp = gp;
 		
 		//JPanel centerPanel=new JPanel();
 		//setOpaque(false);
@@ -112,6 +114,7 @@ public class BatterGrid extends JPanel
 				batting = true;
 				clickedPanel.setBackground(Color.yellow);
 			}
+			
 			
 			
 		}

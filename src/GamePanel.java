@@ -28,6 +28,11 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean gameOver, aWins;
 
 	
+	//user data
+	String username;
+	String team_choice;
+
+	
 	public GamePanel(){
 		super(null);
 		
@@ -53,15 +58,14 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(sp);
 		*/
 		
-		BatterGrid bg = new BatterGrid();
+		BatterGrid bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
 		add(bg);
 		
-
+		DiamondPanel dp = new DiamondPanel();
+		dp.setBounds(600,0, 75, 75);
+		add(dp);
 		
-		//Add Batting Box
-		//Enable user input
-		//Add action listener
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
 		setOpaque(false);
@@ -78,6 +82,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 		//Extract information from message
 		isBatting = object.aBat; //etc.
+		
+		
+		
 	}
 
 
@@ -93,7 +100,14 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	@Override
 	public GameMessage processOutputObject() {
 		//Generate the message depending on where the player has clicked
+		hasMessage = false;
+
+		//get info from batting/pitching grid
+		//make game message
+		//send message
+		
 		return null;
+		
 	}
 	
 	
