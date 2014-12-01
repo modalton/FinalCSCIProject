@@ -60,6 +60,8 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		haveamessage = true;
 		
 		
+		setPreferredSize(new Dimension(300,200));
+		
 		//add actionlistener to jbutton. will set haveamessage to true so client thread will send message 
 		//from output of processOutputObject()
 		sendmessage.addActionListener(new ActionListener(){
