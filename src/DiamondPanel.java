@@ -42,13 +42,6 @@ public class DiamondPanel extends JPanel
 	}
 	public void baseChanged(boolean [] bases)
 	{
-		System.out.println("base changed");
-		for (int i = 0; i < bases.length; i++) {
-			if (bases[i]) {
-				System.out.println("tr");
-			}
-			System.out.println("false");
-		}
 		
 		
 		if(bases[0] && bases[1] && bases[2])//bases loaded

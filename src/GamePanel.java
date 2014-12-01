@@ -107,11 +107,12 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		THERE IS AT LEAST ONE BATTER 
 		AND ONE PITCHER*/
 		if(object.firstMsg){
-			pitcher.start();
-			batter.start();
 			System.out.println("THINKS SERVER IS SENDING FIRST MESSAGE");
 			return;
 		}
+		pitcher.run();
+		batter.run();
+
 		
 		String inningStatement = "";
 		
