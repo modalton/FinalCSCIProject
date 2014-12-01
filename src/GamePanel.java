@@ -232,6 +232,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		sp.repaint();
 	    sp.revalidate();
 		sp.updateUI();
+		
 		this.onBase = object.onBase;
 		if (this.onBase != null)
 			dp.baseChanged(onBase);

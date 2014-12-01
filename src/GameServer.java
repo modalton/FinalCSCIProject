@@ -229,7 +229,7 @@ public class GameServer extends Server<GameMessage>{
 			addScore++;
 		}
 		
-		System.out.println("Leaving update bases, AddSCORE = " + addScore);
+		
 		updateScore(addScore); //update the score
 	}
 	

@@ -48,7 +48,7 @@ public class DiamondPanel extends JPanel
 	public void baseChanged(boolean [] bases)
 	{
 		System.out.println("base changed");
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < bases.length; i++) {
 			if (bases[i]) {
 				System.out.println("tr");
 			}
