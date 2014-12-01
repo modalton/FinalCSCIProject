@@ -53,19 +53,21 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		sa.start();
 		sa2.start();
 		
-		/*
+		
 		ScorePanel sp = new ScorePanel();
-		sp.setBounds(300, 0, 100, 50);
+		sp.setBounds(0, 0, 700, 30);
 		add(sp);
-		*/
+		
 		
 		BatterGrid bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
 		add(bg);
 		
+		/*
 		DiamondPanel dp = new DiamondPanel();
 		dp.setBounds(600,0, 75, 75);
 		add(dp);
+		*/
 		
 		
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON

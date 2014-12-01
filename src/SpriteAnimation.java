@@ -42,7 +42,14 @@ public class SpriteAnimation extends Thread{
 		GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = environment.getDefaultScreenDevice();
 		GraphicsConfiguration config = device.getDefaultConfiguration();
-		resizedImage = config.createCompatibleImage(100, 100, Transparency.BITMASK);
+		if (isBatter) {
+			resizedImage = config.createCompatibleImage(100, 150, Transparency.BITMASK);
+
+		}
+		else {
+			resizedImage = config.createCompatibleImage(100, 100, Transparency.BITMASK);
+
+		}
 		
 		
 		
@@ -50,7 +57,14 @@ public class SpriteAnimation extends Thread{
 		label.revalidate();
 		label.repaint();
 		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(pic, 0, 0, 100, 100, null);
+		if (isBatter) {
+			g.drawImage(pic, 0, 0, 100, 150, null);
+
+		}
+		else {
+			g.drawImage(pic, 0, 0, 100, 100, null);
+
+		}
 		g.dispose();
 	}
 
