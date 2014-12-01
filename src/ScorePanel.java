@@ -6,15 +6,16 @@ import javax.swing.*;
 
 public class ScorePanel extends JPanel
 {
-	int homescoreint, awayscoreint, inningint, outint, strikeint, ballint, battersScoring;
+	int homescoreint, awayscoreint, outint, strikeint, ballint, battersScoring;
 	boolean homeUp, onfirst, onsecond, onthird, first, second, third;
 	JButton homescore, awayscore, strikesballs, outs;
 	JLabel inning;
+	String inningint;
 	public ScorePanel()
 	{
 		homescoreint = 0;
 		awayscoreint=0;
-		inningint = 0;
+		inningint = "1^  ";
 		outint=0;
 		strikeint=0;
 		ballint=0;
@@ -25,14 +26,14 @@ public class ScorePanel extends JPanel
 
 
 		setBackground(Color.GRAY);
-		JLabel hometeam = new JLabel("HOME  ");
+		JLabel hometeam = new JLabel("  HOME  ");
 		hometeam.setForeground(Color.white);
 
 		homescore= new JButton(homescoreint + "");
 		homescore.setForeground(Color.red);
 		//homescore.setEnabled(false);
 
-		JLabel awayteam = new JLabel("AWAY  ");
+		JLabel awayteam = new JLabel(" AWAY  ");
 		awayteam.setForeground(Color.white);
 
 
@@ -43,6 +44,7 @@ public class ScorePanel extends JPanel
 		//special JLabel
 		inning = new JLabel("Inning: " + inningint);
 		inning.setForeground(Color.white);
+		inning.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
 
 		strikesballs= new JButton(ballint + "-" + strikeint);
 		strikesballs.setBackground(Color.white);
@@ -120,27 +122,15 @@ public class ScorePanel extends JPanel
 		}
 	}
 
-	public void inningChange()
+	public void inningChange(String inningS)
 	{
-		strikeint=0;
-		ballint=0;
-		outint=0;
-
-		strikesballs.setText(ballint + "-" + strikeint);
-		outs.setText(outint + " OUT");
-
-		if(homeUp) //home team was batting
-		{//go to bottom of inning
-			homeUp=false;
+		
+		inning.setText("Inning: " + inningS);
 			//change the JLabel
-		}
-		else
-		{//go to top of inning
-			homeUp=true;
-			inningint++;
-			inning.setText("Inning: " + inningint);
-			//change the JLabel
-		}
+		repaint();
+		revalidate();
+		updateUI();
+
 	}
 	public void batterSingle()
 	{
