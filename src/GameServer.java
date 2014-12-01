@@ -24,7 +24,7 @@ public class GameServer extends Server<GameMessage>{
 	boolean firstMsg = true;
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
-	private boolean[] onBase; // what base people are on
+	boolean[] onBase; // what base people are on
 	boolean aBatting;
 	boolean gameOver, aWins, tieGame;
 	Vector<Vector<String>> teams = new Vector<Vector<String>>();

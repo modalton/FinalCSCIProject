@@ -197,6 +197,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 			test.setVisible(true);
 		}
 		sp.inningChange(inningStatement);
+		System.out.println("\n\n$$$$%%%%%\nstrikes = " + object.strikes);
 		sp.batterStrike(object.strikes);
 		sp.batterOut(object.outs);
 		sp.addScore(object.scoreA, object.scoreB);
