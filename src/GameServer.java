@@ -28,6 +28,7 @@ public class GameServer extends Server<GameMessage>{
 	boolean aBatting;
 	boolean gameOver, aWins, tieGame;
 	Vector<Vector<String>> teams = new Vector<Vector<String>>();
+	private boolean homeRun = false;
 	
 	GameMessage msg;
 	
@@ -125,6 +126,7 @@ public class GameServer extends Server<GameMessage>{
 			updateBases(4);
 			changeBatter();
 			changePitcher();
+			homeRun = true;
 		//
 		}
 		// if batter is within 1 squares away from hit
@@ -302,7 +304,7 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, strikes, outs, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
 		//Send the message
 		firstMsg = false;
 		sendToAll(theMsg);

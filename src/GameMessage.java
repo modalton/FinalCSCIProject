@@ -21,6 +21,7 @@ public class GameMessage implements Serializable{
 	public boolean isUp;
 	public boolean aBat;
 	public boolean gameOver, aWins, tieGame;
+	public boolean homeRun;
 	
 	
 	/*
@@ -39,7 +40,7 @@ public class GameMessage implements Serializable{
 	 * gameOver -->  boolean used to tell clients that the game is over
 	 * aWins --> boolean that tells client if team A won (only applicable if game over)
 	 */
-	public GameMessage (String sender, int x, int y, String batterSn, String pitcherSn, int strikes, int outs, int score1, int score2, boolean []onBase, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean gameOver, boolean aWins, boolean tieGame, boolean firstMsg, String username, String team_choice){
+	public GameMessage (String sender, int x, int y, String batterSn, String pitcherSn, int strikes, int outs, boolean homeRun, int score1, int score2, boolean []onBase, boolean inningChange, int inning, boolean pitChange, boolean batChange, boolean aBatting, boolean gameOver, boolean aWins, boolean tieGame, boolean firstMsg, String username, String team_choice){
 		msgSender = sender;
 		
 		
@@ -61,6 +62,7 @@ public class GameMessage implements Serializable{
 		changePit = pitChange;
 		changeBat = batChange;
 		
+		this.homeRun = homeRun;
 		
 		aBat = aBatting;
 		
