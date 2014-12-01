@@ -25,10 +25,10 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	int strikes, outs;
 	boolean inningChange, pitChange, batChange;
 	boolean[] onBase; // what base people are on
-	boolean gameOver, aWins;
+	boolean gameOver, aWins, tieGame;
+	boolean firstMsg;
+	boolean aBatting;
 
-
-	
 	//user data
 	String username;
 	String team_choice;
@@ -71,6 +71,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		//HAVE TO KNOW WHAT TEAM THIS GAMEPANEL'S CLIENT IS ON
 		setOpaque(false);
 		
+		firstMsg = true;
+		hasMessage = true;
+		
 	}
 
 	//Add actionListener for pitcher/batter click in Batting Box
@@ -102,12 +105,19 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	public GameMessage processOutputObject() {
 		//Generate the message depending on where the player has clicked
 		hasMessage = false;
+		GameMessage theMsg;
 
 		//get info from batting/pitching grid
 		//make game message
 		//send message
+		if (isBatting){
+			theMsg = new GameMessage("BATTER", x, y, "", "", scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+		} else{
+			theMsg = new GameMessage("PITCHER", x, y, "", "", scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+
+		}
 		
-		return null;
+		return theMsg;
 		
 	}
 	
