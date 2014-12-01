@@ -97,35 +97,6 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 	}
 	
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		//baseball move
-		
-		g.setFont( new Font("TimesRoman", Font.PLAIN, 32));
-
-		if(homeRun){ //Homer
-			g.setColor(Color.GREEN);
-			g.drawString("HOME RUN!!!",300,250);
-		}
-
-		/*if(true){ //strike
-			g.setColor(Color.RED);
-			g.drawString("Strike", 325,250);
-		}
-
-		if(true){ //normal hit
-			g.setColor(Color.BLUE);
-			if(true){  //single 
-				g.drawString("Single", 325,250);
-			}
-			if(true){  //double
-				g.drawString("Double", 325,250);
-			}
-			if(true){  //double
-				g.drawString("Triple", 325,250);
-			}
-		}*/
-	}
 
 	@Override
 	public void processInputObject(GameMessage object) {
@@ -233,6 +204,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	    sp.revalidate();
 		sp.updateUI();
 		this.onBase = object.onBase;
+		for (int i = 0; i < object.onBase.length; i++){
+			System.out.println("Object.onbase[" + i + "] = " + object.onBase[i]);
+		}
 		if (this.onBase != null)
 			dp.baseChanged(onBase);
 		else {
