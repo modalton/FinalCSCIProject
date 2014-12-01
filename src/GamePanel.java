@@ -35,7 +35,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
 	ScorePanel sp;
-
+	JPanel test;
 	//user data
 	String username;
 	String team_choice;
@@ -69,6 +69,14 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		BatterGrid bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
 		add(bg);
+		
+		test = new JPanel();
+		test.setBounds(250, 200, 200, 100);
+		JLabel homeRun = new JLabel ("HomeRUN!!!");
+		homeRun.setHorizontalAlignment(JLabel.CENTER);
+		test.add(homeRun);
+		test.setVisible(false);
+		add(test);
 		
 		/*
 		DiamondPanel dp = new DiamondPanel();
@@ -211,6 +219,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		System.out.println("Inning = " + inning + ", InningStatement = " + inningStatement);
 		
 		homeRun = object.homeRun;
+		if (homeRun){
+			test.setVisible(true);
+		}
 		sp.inningChange(inningStatement);
 		sp.batterStrike(object.strikes);
 		sp.batterOut(object.outs);
