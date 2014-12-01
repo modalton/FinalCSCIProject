@@ -6,11 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CreateAccountCommand extends SQLCommand {
+public class AccountLoginCommand extends SQLCommand {
 
 	String userName, passWord;
 
-	public CreateAccountCommand(ReentrantLock queryLock, String userName, String passWord) {
+	public AccountLoginCommand(ReentrantLock queryLock, String userName, String passWord) {
 		super(queryLock);
 		// TODO Auto-generated constructor stub
 
@@ -20,7 +20,7 @@ public class CreateAccountCommand extends SQLCommand {
 
 	@Override
 	public boolean execute() {
-		String largestAID; //largestAccountID (largestAID)
+		String largestAID;
 		int highAID = 0;
 
 		try {
@@ -34,28 +34,27 @@ public class CreateAccountCommand extends SQLCommand {
 			System.out.println("Number of rows = " + largestAID);
 			highAID = Integer.parseInt(largestAID);
 			/*if (largestAID != null){ //If there is at least one user in the system
-				highAID = Integer.parseInt(largestAID);
-				highAID++;
-			} else {
-				highAID = 1;
-				//highAID++;
-			}*/
+					highAID = Integer.parseInt(largestAID);
+					highAID++;
+				} else {
+					highAID = 1;
+					//highAID++;
+				}*/
 			System.out.println("Highest userID = " + highAID);
 
 			rs = stmt.executeQuery("SELECT * FROM user_accounts AS currUser");
 			for (int i = 0; i < highAID; i++){ //Check if the username already exists in the server
 				rs.next();
-				//System.out.println("The first string, which should be a username is = " + rs.getString(1) + ", rs.getString(2) = " + rs.getString(2));
 				if (rs.getString(2).equals(userName)){
-					System.out.println("Username already taken!");
-					return false;
+					if (rs.getString(3).equals(passWord)){
+						System.out.println("Login successful");
+						return true;
+					} else{
+						System.out.println("Login FAILED!");
+						return false;
+					}
 				} 
 			}
-			PreparedStatement ps = dbConn.prepareStatement("Insert Into user_accounts(user_name, user_pass) VALUES(?, ?)") ;
-			ps.setString(1, userName);
-			ps.setString(2, passWord); 
-			ps.execute();
-			System.out.println(userName + " added with password " + passWord);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,8 +62,8 @@ public class CreateAccountCommand extends SQLCommand {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return true;
+		System.out.println("Login FAILED!");
+		return false;
 	}
 
 	public static void main (String[] args){
@@ -72,3 +71,6 @@ public class CreateAccountCommand extends SQLCommand {
 	}
 
 }
+
+
+
