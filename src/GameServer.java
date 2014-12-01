@@ -17,14 +17,14 @@ public class GameServer extends Server<GameMessage>{
 	String sender;
 	int bX, bY, pX, pY; //grid positions of batter and pitcher
 	private int scoreA, scoreB;
-	int base, inning; 
+	int base, inning = 1; 
 	int strikes, outs;
 	String batterSn = null, pitcherSn = null;
 	int batterIndex, pitcherIndex;
 	boolean firstMsg = true;
 	boolean inningChange, pitChange, batChange;
 	boolean receivedPitch, receivedBat;
-	boolean[] onBase; // what base people are on
+	private boolean[] onBase; // what base people are on
 	boolean aBatting;
 	boolean gameOver, aWins, tieGame;
 	Vector<Vector<String>> teams = new Vector<Vector<String>>();
@@ -79,6 +79,8 @@ public class GameServer extends Server<GameMessage>{
 				}
 			}
 		} else{
+			//if (teams.elementAt(0).size() < maxPlayers || teams.elementAt(1).size() < maxPlayers) //Will not send any messages until both teams are full.
+				//return;
 			switch (sender){
 				case serverSender: //When you receive a message from the server, it must be a new play
 					bX = -1;
@@ -109,7 +111,6 @@ public class GameServer extends Server<GameMessage>{
 				processPlay();
 			}
 		}
-		
 		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers){ //STARTS THE ANIMATIONS ONCE both teams are full
 			sendMessage();
 		}
@@ -234,6 +235,9 @@ public class GameServer extends Server<GameMessage>{
 		//Change who's batting
 		aBatting = !aBatting;
 		
+		strikes = 0;
+		outs = 0;
+		
 		inningChange = true;
 		
 		batterIndex = 0;
@@ -246,7 +250,7 @@ public class GameServer extends Server<GameMessage>{
 		inning++;
 		
 		//Check if game is over
-		if (inning == 10){
+		if (inning == 19){
 			if (scoreA != scoreB){
 				gameOver = true;
 				if (scoreA > scoreB)
@@ -254,7 +258,7 @@ public class GameServer extends Server<GameMessage>{
 				else
 					aWins = false;
 			}
-		} else if (inning == 13){
+		} else if (inning == 25){
 			gameOver = true;
 			if (scoreA != scoreB){
 				if (scoreA > scoreB)

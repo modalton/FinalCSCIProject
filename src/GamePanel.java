@@ -95,9 +95,90 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 			pitcher.start();
 			batter.start();
 			System.out.println("THINKS SERVER IS SENDING FIRST MESSAGE");
-			//return;
+			return;
 		}
 		
+		String inningStatement = "";
+		
+		switch (object.inning){
+			case 1: 
+				inningStatement = "1^";
+				break;
+			case 2:
+				inningStatement = "1v";
+				break;
+			case 3: 
+				inningStatement = "2^";
+				break;
+			case 4:
+				inningStatement = "2v";
+				break;
+			case 5: 
+				inningStatement = "3^";
+				break;
+			case 6:
+				inningStatement = "3v";
+				break;
+			case 7: 
+				inningStatement = "4^";
+				break;
+			case 8:
+				inningStatement = "4v";
+				break;
+			case 9: 
+				inningStatement = "5^";
+				break;
+			case 10:
+				inningStatement = "5v";
+				break;
+			case 11: 
+				inningStatement = "6^";
+				break;
+			case 12:
+				inningStatement = "6v";
+				break;
+			case 13: 
+				inningStatement = "7^";
+				break;
+			case 14:
+				inningStatement = "7v";
+				break;
+			case 15: 
+				inningStatement = "8^";
+				break;
+			case 16:
+				inningStatement = "8v";
+				break;
+			case 17: 
+				inningStatement = "9^";
+				break;
+			case 18:
+				inningStatement = "9v";
+				break;
+			case 19: 
+				inningStatement = "10^";
+				break;
+			case 20:
+				inningStatement = "10v";
+				break;
+			case 21: 
+				inningStatement = "11^";
+				break;
+			case 22:
+				inningStatement = "11v";
+				break;
+			case 23: 
+				inningStatement = "12^";
+				break;
+			case 24:
+				inningStatement = "12v";
+				break;
+		}
+		
+		System.out.println("Inning = " + inning + ", InningStatement = " + inningStatement);
+		
+		
+		sp.inningChange(inningStatement);
 		sp.batterStrike(object.strikes);
 		sp.batterOut(object.outs);
 		sp.addScore(object.scoreA, object.scoreB);
