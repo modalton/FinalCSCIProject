@@ -13,192 +13,127 @@ import javax.swing.*;
 
 public class DiamondPanel extends JPanel
 {
-	BufferedImage img = null;
+	boolean [] onBase;
 	Image picture;
-	ImageIcon imageIcon;
-	JLabel lbl;
+	JLabel picLabel;
 	public DiamondPanel()
 	{
+		//setPreferredSize(new Dimension(200, 300));
 		try
-		{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-			img = ImageIO.read(new File("src/Images/EmptyBases.jpg"));
-		}
+		{picture = ImageIO.read(new File("src/Images/EmptyBases.jpg"));}
 		catch(Exception e)
 		{System.out.println(e.getMessage());}
-		int x =getWidth();
-		int y = getHeight();
-		BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(dimg);
 		
+		Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+		//ImageIcon imageIcon=new ImageIcon(dimg);
 		
-        lbl=new JLabel();
-        lbl.setIcon(imageIcon);
-        add(lbl);
-		
+		picLabel = new JLabel( new ImageIcon(dimg));
+		add(picLabel);
 	}
-	/*protected void paintComponent(Graphics g)
+	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 		int x = getWidth();
 		int y = getHeight();
 		
-		g.drawImage(imageIcon, x, y, 0, 0, this);
+		g.drawImage(picture, x, y, 0, 0, this);
 		//g.drawImage(picture, ((index+x_adjust)*x/10+50), (y_adjust*y/12 + 10), 35, 35, this);
 		
-	}*/
+	}
 	public void baseChanged(boolean [] bases)
 	{
+		
+		
 		if(bases[0] && bases[1] && bases[2])//bases loaded
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/BasesLoaded.jpg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/BasesLoaded.jpg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(!bases[0] && !bases[1] && !bases[2])//bases empty
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/EmptyBases.jpg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(bases[0] && !bases[1] && !bases[2])//first
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/First.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/First.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(!bases[0] && bases[1] && !bases[2])//on second
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/Second.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/Second.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(!bases[0] && !bases[1] && bases[2])//on third
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/Third.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/Third.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(bases[0] && bases[1] && !bases[2])//first and second
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/FirstSecond.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/FirstSecond.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(bases[0] && !bases[1] && bases[2])//first and third
 		{	
-		
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/FirstThird.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/FirstThird.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
 		if(!bases[0] && bases[1] && bases[2])//second and third
 		{	
-			
 			try
-			{//picture = ImageIO.read(new File("Base_Images/EmptyBases.jpg"));
-				img = ImageIO.read(new File("Base_Images/SecondThird.jpeg"));
-			}
+			{picture = ImageIO.read(new File("src/Images/SecondThird.jpeg"));}
 			catch(Exception e)
 			{System.out.println(e.getMessage());}
-			int x =getWidth();
-			int y = getHeight();
-			BufferedImage dimg = (BufferedImage) img.getScaledInstance(x, y,Image.SCALE_SMOOTH);
-			imageIcon = new ImageIcon(dimg);
-			
-			
-	        lbl=new JLabel();
-	        lbl.setIcon(imageIcon);
 			//paint
+			Image dimg = picture.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+			picLabel = new JLabel( new ImageIcon(dimg));
+
 		}
+		repaint();
+		revalidate();
+		updateUI();
 	}
 }

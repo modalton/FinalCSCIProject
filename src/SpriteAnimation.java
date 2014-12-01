@@ -93,7 +93,6 @@ public class SpriteAnimation extends Thread{
 		}
 	}
 	public void run() {
-		while (true) {
 			for (int i = 0; i < sprites.length; i++){
 				render();
 				try {
@@ -104,7 +103,7 @@ public class SpriteAnimation extends Thread{
 				update();
 	
 			}
-		}
+		
 	}
 
 
