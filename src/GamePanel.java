@@ -36,6 +36,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	SpriteAnimation batter;
 	ScorePanel sp;
 	boolean onFirst,onSecond, onThird;
+	boolean isUp;
+	String batterSn, pitcherSn;
 	
 	JPanel test;
 	DiamondPanel dp;
@@ -58,7 +60,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(pitcherLabel);
 		add(batterLabel);
 
-		
+		isUp = false;
 		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
 		batter = new SpriteAnimation(batterLabel, true);
 /*		pitcher.start();
