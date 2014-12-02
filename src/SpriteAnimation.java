@@ -112,6 +112,7 @@ public class SpriteAnimation extends Thread{
 	}
 	public void run() {
 		while (true) {
+			
 			if (getIsStatic()) {
 				render();
 				try {
@@ -134,6 +135,7 @@ public class SpriteAnimation extends Thread{
 				}
 				isStatic = true;
 			}
+			
 		}
 	}
 

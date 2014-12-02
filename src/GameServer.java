@@ -29,7 +29,6 @@ public class GameServer extends Server<GameMessage>{
 	boolean gameOver, aWins, tieGame;
 	Vector<Vector<String>> teams = new Vector<Vector<String>>();
 	private boolean homeRun = false;
-	private boolean teamsFull;
 	
 	GameMessage msg;
 	
@@ -50,7 +49,6 @@ public class GameServer extends Server<GameMessage>{
 		aWins = false;
 		tieGame = false;
 		
-		teamsFull = false;
 		
 		Vector<String> team1 = new Vector<String>();
 		Vector<String> team2 = new Vector<String>();
@@ -115,9 +113,8 @@ public class GameServer extends Server<GameMessage>{
 				processPlay();
 			}
 		}
-		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers && !teamsFull){ //STARTS THE ANIMATIONS ONCE both teams are full
+		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers && firstMsg){ //STARTS THE ANIMATIONS ONCE both teams are full
 			sendMessage();
-			teamsFull = true;
 		}
 			
 	}
