@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	int base, inning; 
 	int strikes = 0, outs = 0;
 	boolean inningChange, pitChange, batChange;
-	private boolean[] onBase; // what base people are on
+	//private boolean[] onBase; // what base people are on
 	boolean gameOver, aWins, tieGame;
 	boolean firstMsg;
 	boolean aBatting;
@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
 	ScorePanel sp;
+	boolean onFirst,onSecond, onThird;
 	
 	JPanel test;
 	DiamondPanel dp;
@@ -198,15 +199,20 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	    sp.revalidate();
 		sp.updateUI();
 		
-		this.onBase = object.onBase;
-		for (int i = 0; i < object.onBase.length; i++){
-			System.out.println("Object.onbase[" + i + "] = " + object.onBase[i]);
-		}
-		if (this.onBase != null)
-			dp.baseChanged(onBase);
-		else {
+		this.onFirst = object.onFirst;
+		this.onSecond = object.onSecond;
+		this.onThird = object.onThird;
+		//this.onBase = object.onBase;
+		System.out.println("****");
+		System.out.println("onFirst = " + onFirst);
+		System.out.println("onSecond = " + onSecond);
+		System.out.println("onThird = " + onThird);
+		System.out.println("****");
+		//if (this.onBase != null)
+			dp.baseChanged(onFirst, onSecond, onThird);
+		/*else {
 			System.out.println("ARG");
-		}
+		}*/
 
 		remove(sp);
 		sp.setBounds(0, 0, 700, 30);
@@ -231,7 +237,6 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		hasMessage = false;
 		GameMessage theMsg;
 
-		
 		//get info from batting/pitching grid
 		//make game message
 		//send message
@@ -247,9 +252,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		}
 		
 		if (isBatting){
-			theMsg = new GameMessage("BATTER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+			theMsg = new GameMessage("BATTER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onFirst, onSecond, onThird, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
 		} else{
-			theMsg = new GameMessage("PITCHER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+			theMsg = new GameMessage("PITCHER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onFirst, onSecond, onThird, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
 
 		}
 		

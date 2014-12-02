@@ -112,7 +112,7 @@ public class GameServer extends Server<GameMessage>{
 				processPlay();
 			}
 		}
-		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers){ //STARTS THE ANIMATIONS ONCE both teams are full
+		if ((teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers) && firstMsg){ //STARTS THE ANIMATIONS ONCE both teams are full
 			sendMessage();
 		}
 			
@@ -229,6 +229,10 @@ public class GameServer extends Server<GameMessage>{
 			addScore++;
 		}
 		
+		for (int i = 0; i < onBase.length; i++){
+			System.out.println("iN GAMESERVER onbase[" + i + "] = " + onBase[i]);
+		}
+		
 		
 		updateScore(addScore); //update the score
 	}
@@ -304,7 +308,15 @@ public class GameServer extends Server<GameMessage>{
 	}
 	
 	private void sendMessage(){
-		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
+		for (int i = 0; i < onBase.length; i++){
+			System.out.println("\nSENDING THE MESSAGE!!! onbase[" + i + "] = " + onBase[i]);
+		}
+		
+		boolean onFirst = onBase[0];
+		boolean onSecond = onBase[1];
+		boolean onThird = onBase[2];
+		
+		GameMessage theMsg = new GameMessage ("SERVER", bX, bY, batterSn, pitcherSn, strikes, outs, homeRun, scoreA, scoreB, onFirst, onSecond, onThird, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, "", "");
 		//Send the message
 		firstMsg = false;
 		sendToAll(theMsg);
