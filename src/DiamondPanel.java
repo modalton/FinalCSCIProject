@@ -13,7 +13,7 @@ import javax.swing.*;
 
 public class DiamondPanel extends JPanel
 {
-	boolean [] onBase;
+	//boolean [] onBase;
 	Image picture;
 	JLabel picLabel;
 	public DiamondPanel()
@@ -40,11 +40,15 @@ public class DiamondPanel extends JPanel
 		//g.drawImage(picture, ((index+x_adjust)*x/10+50), (y_adjust*y/12 + 10), 35, 35, this);
 		
 	}
-	public void baseChanged(boolean [] bases)
+	public void baseChanged(boolean onFirst, boolean onSecond, boolean onThird)
 	{
+		System.out.println("**** (IN DIAMONDPANEL)");
+		System.out.println("onFirst = " + onFirst);
+		System.out.println("onSecond = " + onSecond);
+		System.out.println("onThird = " + onThird);
+		System.out.println("****");
 		
-		
-		if(bases[0] && bases[1] && bases[2])//bases loaded
+		if(onFirst && onSecond && onThird)//bases loaded
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/BasesLoaded.jpg"));}
@@ -55,7 +59,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(!bases[0] && !bases[1] && !bases[2])//bases empty
+		if(!onFirst && !onSecond && !onThird)//bases empty
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/EmptyBases.jpg"));}
@@ -66,7 +70,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(bases[0] && !bases[1] && !bases[2])//first
+		if(onFirst && !onSecond && !onThird)//first
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/First.jpeg"));}
@@ -77,7 +81,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(!bases[0] && bases[1] && !bases[2])//on second
+		if(!onFirst && onSecond && !onThird)//on second
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/Second.jpeg"));}
@@ -88,7 +92,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(!bases[0] && !bases[1] && bases[2])//on third
+		if(!onFirst && !onSecond && onThird)//on third
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/Third.jpeg"));}
@@ -99,7 +103,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(bases[0] && bases[1] && !bases[2])//first and second
+		if(onFirst && onSecond && !onThird)//first and second
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/FirstSecond.jpeg"));}
@@ -110,7 +114,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(bases[0] && !bases[1] && bases[2])//first and third
+		if(onFirst && !onSecond && onThird)//first and third
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/FirstThird.jpeg"));}
@@ -121,7 +125,7 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
-		if(!bases[0] && bases[1] && bases[2])//second and third
+		if(!onFirst && onSecond && onThird)//second and third
 		{	
 			try
 			{picture = ImageIO.read(new File("src/Images/SecondThird.jpeg"));}
@@ -132,6 +136,10 @@ public class DiamondPanel extends JPanel
 			picLabel = new JLabel( new ImageIcon(dimg));
 
 		}
+		
+		this.removeAll();
+		this.add(picLabel);
+		
 		repaint();
 		revalidate();
 		updateUI();

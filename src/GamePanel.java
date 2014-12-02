@@ -26,7 +26,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	int base, inning; 
 	int strikes = 0, outs = 0;
 	boolean inningChange, pitChange, batChange;
-	private boolean[] onBase; // what base people are on
+	//private boolean[] onBase; // what base people are on
 	boolean gameOver, aWins, tieGame;
 	boolean firstMsg;
 	boolean aBatting;
@@ -35,6 +35,11 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
 	ScorePanel sp;
+	boolean onFirst,onSecond, onThird;
+	boolean isUp;
+	String batterSn, pitcherSn;
+	
+	BatterGrid bg;
 	
 	JPanel test;
 	DiamondPanel dp;
@@ -57,7 +62,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(pitcherLabel);
 		add(batterLabel);
 
-		
+		isUp = false;
 		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
 		batter = new SpriteAnimation(batterLabel, true);
 /*		pitcher.start();
@@ -69,7 +74,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(sp);
 		
 		
-		BatterGrid bg = new BatterGrid(this);
+		bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
 		add(bg);
 		
@@ -215,19 +220,52 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	    sp.revalidate();
 		sp.updateUI();
 		
-		this.onBase = object.onBase;
-		for (int i = 0; i < object.onBase.length; i++){
-			System.out.println("Object.onbase[" + i + "] = " + object.onBase[i]);
-		}
-		if (this.onBase != null)
-			dp.baseChanged(onBase);
-		else {
+		this.onFirst = object.onFirst;
+		this.onSecond = object.onSecond;
+		this.onThird = object.onThird;
+		//this.onBase = object.onBase;
+		System.out.println("****");
+		System.out.println("onFirst = " + onFirst);
+		System.out.println("onSecond = " + onSecond);
+		System.out.println("onThird = " + onThird);
+		System.out.println("****");
+		//if (this.onBase != null)
+			dp.baseChanged(onFirst, onSecond, onThird);
+		/*else {
 			System.out.println("ARG");
-		}
+		}*/
 
 		remove(sp);
 		sp.setBounds(0, 0, 700, 30);
 		add(sp);
+			
+		if (object.aBat){
+			aBatting = true;
+			if (isTeamA){
+				isBatting = true;
+			} else
+				isBatting = false;
+		} else {
+			aBatting = false;
+			if (isTeamA){
+				isBatting = false;
+			} else
+				isBatting = true;
+		} 
+		
+		this.batterSn = object.batterSn;
+		
+		if (isBatting){
+			if (this.username.equals(batterSn)){
+				bg.setEnabledHandlers(true);
+			} else
+				bg.setEnabledHandlers(false);
+		} else{
+			if (this.username.equals(pitcherSn)){
+				bg.setEnabledHandlers(true);
+			} else
+				bg.setEnabledHandlers(false);
+		}
 		
 		System.out.println("Reached the end of the GamePlay process input!");
 	}
@@ -248,7 +286,6 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		hasMessage = false;
 		GameMessage theMsg;
 
-		
 		//get info from batting/pitching grid
 		//make game message
 		//send message
@@ -264,9 +301,9 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		}
 		
 		if (isBatting){
-			theMsg = new GameMessage("BATTER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+			theMsg = new GameMessage("BATTER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onFirst, onSecond, onThird, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
 		} else{
-			theMsg = new GameMessage("PITCHER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onBase, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
+			theMsg = new GameMessage("PITCHER", x, y, "", "", strikes, outs, homeRun, scoreA, scoreB, onFirst, onSecond, onThird, inningChange, inning, pitChange, batChange, aBatting, gameOver, aWins, tieGame, firstMsg, username, team_choice);
 
 		}
 		
