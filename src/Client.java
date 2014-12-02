@@ -3,6 +3,7 @@ import java.net.*;
 import java.util.Scanner;
  
 public class Client<T, P extends ClientProcessInterface<T>> extends Thread {
+	//String hostName = "10.123.192.66";
 	String hostName = "localhost";
 	String username, team;
 	P panel;

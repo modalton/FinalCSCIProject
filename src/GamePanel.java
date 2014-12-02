@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean isUp;
 	String batterSn, pitcherSn;
 	
+	BatterGrid bg;
+	
 	JPanel test;
 	DiamondPanel dp;
 
@@ -72,7 +74,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(sp);
 		
 		
-		BatterGrid bg = new BatterGrid(this);
+		bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
 		add(bg);
 		
@@ -219,6 +221,34 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		remove(sp);
 		sp.setBounds(0, 0, 700, 30);
 		add(sp);
+			
+		if (object.aBat){
+			aBatting = true;
+			if (isTeamA){
+				isBatting = true;
+			} else
+				isBatting = false;
+		} else {
+			aBatting = false;
+			if (isTeamA){
+				isBatting = false;
+			} else
+				isBatting = true;
+		} 
+		
+		this.batterSn = object.batterSn;
+		
+		if (isBatting){
+			if (this.username.equals(batterSn)){
+				bg.setEnabledHandlers(true);
+			} else
+				bg.setEnabledHandlers(false);
+		} else{
+			if (this.username.equals(pitcherSn)){
+				bg.setEnabledHandlers(true);
+			} else
+				bg.setEnabledHandlers(false);
+		}
 		
 		System.out.println("Reached the end of the GamePlay process input!");
 	}

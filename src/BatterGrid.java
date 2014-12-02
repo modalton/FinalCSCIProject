@@ -88,9 +88,16 @@ public class BatterGrid extends JPanel
 	
 	private class GridButtonHandler implements MouseListener
 	{
+		private boolean listenerEnabled;
+		
+		public GridButtonHandler(){
+			listenerEnabled = true;
+		}
 		
 		public void mouseClicked(MouseEvent e)
 		{
+			if (!listenerEnabled)
+				return;
 			
 			//Get button pressed
 			GridLabel clickedPanel = (GridLabel) e.getSource();
@@ -153,6 +160,15 @@ public class BatterGrid extends JPanel
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
 			
+		}
+	}
+
+
+
+	public void setEnabledHandlers(boolean b) {
+		// TODO Auto-generated method stub
+		for (GridButtonHandler h : gridHandlers){
+			h.listenerEnabled = b;
 		}
 	}
 }
