@@ -8,7 +8,7 @@ public class GameServer extends Server<GameMessage>{
 	private static final String serverSender = "SERVER";
 	private static final String batterSender = "BATTER";
 	private static final String pitcherSender = "PITCHER";
-	private static final int maxPlayers = 2;
+	private static final int maxPlayers = 1;
 
 	
 	//Change these to make the game easier or harder (smaller number is harder)
@@ -29,6 +29,7 @@ public class GameServer extends Server<GameMessage>{
 	boolean gameOver, aWins, tieGame;
 	Vector<Vector<String>> teams = new Vector<Vector<String>>();
 	private boolean homeRun = false;
+	private boolean teamsFull;
 	
 	GameMessage msg;
 	
@@ -48,6 +49,8 @@ public class GameServer extends Server<GameMessage>{
 		gameOver = false;
 		aWins = false;
 		tieGame = false;
+		
+		teamsFull = false;
 		
 		Vector<String> team1 = new Vector<String>();
 		Vector<String> team2 = new Vector<String>();
@@ -112,8 +115,9 @@ public class GameServer extends Server<GameMessage>{
 				processPlay();
 			}
 		}
-		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers){ //STARTS THE ANIMATIONS ONCE both teams are full
+		if (teams.elementAt(0).size() == maxPlayers && teams.elementAt(1).size() == maxPlayers && !teamsFull){ //STARTS THE ANIMATIONS ONCE both teams are full
 			sendMessage();
+			teamsFull = true;
 		}
 			
 	}

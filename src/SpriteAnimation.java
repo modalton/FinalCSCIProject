@@ -17,6 +17,9 @@ public class SpriteAnimation extends Thread{
 	public JLabel label;
 	boolean isBatter;
 	
+	private boolean isStatic;
+	
+	
 	public SpriteAnimation(JLabel jl, boolean isBatter) {
 		this.isBatter = isBatter;
 		if (isBatter){ //Loading batter animation
@@ -31,11 +34,27 @@ public class SpriteAnimation extends Thread{
 			}
 		}
 		label = jl;
+		
+		setIsStatic(true);
+	}
+	
+	
+	public boolean getIsStatic() {
+		return isStatic;
+	}
+	public void setIsStatic(boolean s) {
+		isStatic = s;
 	}
 
 
 	public void render() {
-		BufferedImage pic = sprites[xSprite].getSprite(xSprite,ySprite);
+		BufferedImage pic = null;
+		if (isStatic) {
+			pic = sprites[0].getSprite(xSprite,ySprite);
+		}
+		else {
+			pic = sprites[xSprite].getSprite(xSprite,ySprite);
+		}
 		BufferedImage resizedImage = new BufferedImage(150, 150, BufferedImage.TYPE_INT_ARGB);
 		
 		//Make the sprite transparent
@@ -44,7 +63,6 @@ public class SpriteAnimation extends Thread{
 		GraphicsConfiguration config = device.getDefaultConfiguration();
 		if (isBatter) {
 			resizedImage = config.createCompatibleImage(100, 150, Transparency.BITMASK);
-
 		}
 		else {
 			resizedImage = config.createCompatibleImage(100, 100, Transparency.BITMASK);
@@ -94,15 +112,27 @@ public class SpriteAnimation extends Thread{
 	}
 	public void run() {
 		while (true) {
-			for (int i = 0; i < sprites.length; i++){
+			if (getIsStatic()) {
 				render();
 				try {
 					sleep(120);
 				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				update();
-	
+			}
+			else {
+				for (int i = 0; i < sprites.length; i++){
+					render();
+					try {
+						sleep(120);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					update();
+		
+				}
+				isStatic = true;
 			}
 		}
 	}

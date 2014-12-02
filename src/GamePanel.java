@@ -189,6 +189,23 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 		System.out.println("Inning = " + inning + ", InningStatement = " + inningStatement);
 		
+		pitcher.setIsStatic(false);
+		Thread t = new Thread(new Runnable() {
+
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					Thread.sleep(3000);
+					batter.setIsStatic(false);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		t.start();
+		
 		homeRun = object.homeRun;
 		sp.inningChange(inningStatement);
 		sp.batterStrike(object.strikes);
