@@ -8,7 +8,7 @@ public class GameServer extends Server<GameMessage>{
 	private static final String serverSender = "SERVER";
 	private static final String batterSender = "BATTER";
 	private static final String pitcherSender = "PITCHER";
-	private static final int maxPlayers = 1;
+	private static final int maxPlayers = 2;
 
 	
 	//Change these to make the game easier or harder (smaller number is harder)
