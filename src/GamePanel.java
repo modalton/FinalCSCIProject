@@ -34,6 +34,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean homeRun;
 	SpriteAnimation pitcher;
 	SpriteAnimation batter;
+	Ball ball;
 	ScorePanel sp;
 	boolean onFirst,onSecond, onThird;
 	boolean isUp;
@@ -77,6 +78,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		isUp = false;
 		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
 		batter = new SpriteAnimation(batterLabel, true);
+		ball = new Ball(this);
 /*		pitcher.start();
 		batter.start();*/
 		
@@ -121,6 +123,19 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 	}
 	
+	protected void paintComponent(Graphics g){
+		super.paintComponent(g);
+		int x = getWidth();
+		int y = getHeight();
+		
+		
+		//draws ball
+		ball.drawSelf(g, x, y);//////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		
+	}
+
 
 	@Override
 	public void processInputObject(GameMessage object) {
@@ -134,6 +149,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 			System.out.println("THINKS SERVER IS SENDING FIRST MESSAGE");
 			pitcher.start();
 			batter.start();
+			ball.start();
 
 			if (object.aBat){
 				aBatting = true;
@@ -342,12 +358,15 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		System.out.println("Inning = " + inning + ", InningStatement = " + inningStatement);
 		
 		pitcher.setIsStatic(false);
+		ball.ready = true;
+
 		Thread t = new Thread(new Runnable() {
 
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(1000);
+					Thread.sleep(2000);
 					batter.setIsStatic(false);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
