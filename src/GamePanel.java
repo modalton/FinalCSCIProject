@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	String batterSn, pitcherSn;
 	
 	JLabel myTurn;
+	JLabel thePlay;
 	
 	BatterGrid bg;
 	
@@ -64,6 +65,13 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		add(pitcherLabel);
 		add(batterLabel);
 
+		scoreA = 0;
+		scoreB = 0;
+		base = 0;
+		inning = 0; 
+		strikes = 0;
+		outs = 0;
+		
 		isUp = false;
 		pitcher = new SpriteAnimation(pitcherLabel, false); //Second parameter is "isBatter"
 		batter = new SpriteAnimation(batterLabel, true);
@@ -77,6 +85,14 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		myTurn.setOpaque(true);
 		add(myTurn);
 		myTurn.setVisible(false);
+		
+		thePlay = new JLabel ("Homerun", SwingConstants.CENTER);
+		thePlay.setBounds(10,  300, 200, 50);
+		thePlay.setBackground(Color.LIGHT_GRAY);
+		thePlay.setForeground(Color.RED);
+		thePlay.setOpaque(true);
+		add(thePlay);
+		thePlay.setVisible(false);
 		
 		sp = new ScorePanel();
 		sp.setBounds(0, 0, 700, 30);
@@ -180,7 +196,69 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		}
 		
 		
+		thePlay.setVisible(false);
+		repaint();
+		revalidate();
+		updateUI();
+		
+		homeRun = object.homeRun;
 
+		if (homeRun){
+			thePlay.setText("HOMERUN!"); 
+			thePlay.setBackground(Color.YELLOW);
+			thePlay.setForeground(Color.RED);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		}
+		else if (this.scoreA < object.scoreA){
+			thePlay.setText("RUN SCORED!"); 
+			thePlay.setBackground(Color.WHITE);
+			thePlay.setForeground(Color.BLACK);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		} else if (this.scoreB < object.scoreB){
+			thePlay.setText("RUN SCORED!"); 
+			thePlay.setBackground(Color.WHITE);
+			thePlay.setForeground(Color.BLACK);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		} else if (this.strikes < object.strikes){
+			thePlay.setText("STRIKE!"); 
+			thePlay.setBackground(Color.PINK);
+			thePlay.setForeground(Color.WHITE);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		} else if (this.outs < object.outs){
+			thePlay.setText("OUT!"); 
+			thePlay.setBackground(Color.BLUE);
+			thePlay.setForeground(Color.YELLOW);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		} else if (this.inning < object.inning){
+			thePlay.setText("INNING CHANGE"); 
+			thePlay.setBackground(Color.GRAY);
+			thePlay.setForeground(Color.RED);
+			thePlay.setOpaque(true);
+			thePlay.setVisible(true);
+			repaint();
+			revalidate();
+			updateUI();
+		}
 		
 		String inningStatement = "";
 		
@@ -278,7 +356,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		});
 		t.start();
 		
-		homeRun = object.homeRun;
+		
+		
 		sp.inningChange(inningStatement);
 		sp.batterStrike(object.strikes);
 		sp.batterOut(object.outs);
@@ -322,6 +401,56 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		
 		this.batterSn = object.batterSn;
 		this.pitcherSn = object.pitcherSn;
+		
+		if (object.gameOver){
+			if (object.tieGame){
+				JLabel iWin = new JLabel ("TIE GAME!", SwingConstants.CENTER);
+				iWin.setBounds(0,  0, 700, 500);
+				iWin.setBackground(Color.gray);
+				iWin.setForeground(Color.GREEN);
+				iWin.setOpaque(true);
+				add(iWin);
+				iWin.setVisible(true);
+			}
+			else if (object.aWins){
+				if (this.isTeamA){
+					JLabel iWin = new JLabel ("YOU WIN!", SwingConstants.CENTER);
+					iWin.setBounds(0,  0, 700, 500);
+					iWin.setBackground(Color.gray);
+					iWin.setForeground(Color.GREEN);
+					iWin.setOpaque(true);
+					add(iWin);
+					iWin.setVisible(true);
+				} else {
+					JLabel iLose = new JLabel ("YOU LOSE!", SwingConstants.CENTER);
+					iLose.setBounds(0,  0, 700, 500);
+					iLose.setBackground(Color.DARK_GRAY);
+					iLose.setForeground(Color.RED);
+					iLose.setOpaque(true);
+					add(iLose);
+					iLose.setVisible(true);
+				}
+			} else {
+				if (this.isTeamA){
+					JLabel iLose = new JLabel ("YOU LOSE!", SwingConstants.CENTER);
+					iLose.setBounds(0,  0, 700, 500);
+					iLose.setBackground(Color.DARK_GRAY);
+					iLose.setForeground(Color.RED);
+					iLose.setOpaque(true);
+					add(iLose);
+					iLose.setVisible(true);
+					
+				} else {
+					JLabel iWin = new JLabel ("YOU WIN!", SwingConstants.CENTER);
+					iWin.setBounds(0,  0, 700, 500);
+					iWin.setBackground(Color.gray);
+					iWin.setForeground(Color.GREEN);
+					iWin.setOpaque(true);
+					add(iWin);
+					iWin.setVisible(true);
+				}
+			}
+		}
 
 		if (isBatting){
 			if (this.username.equals(batterSn)){
@@ -364,6 +493,13 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 				updateUI();
 			}
 		}
+		
+		this.strikes = object.strikes;
+		this.outs = object.outs;
+		this.inning = object.inning;
+		this.scoreA = object.scoreA;
+		this.scoreB = object.scoreB;
+		
 		
 		System.out.println("Reached the end of the GamePlay process input!");
 	}

@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Vector;
 
 
@@ -8,11 +9,12 @@ public class GameServer extends Server<GameMessage>{
 	private static final String serverSender = "SERVER";
 	private static final String batterSender = "BATTER";
 	private static final String pitcherSender = "PITCHER";
-	private static final int maxPlayers = 1;
+	private static final int maxPlayers = 2;
 
 	
 	//Change these to make the game easier or harder (smaller number is harder)
 	private static final int leeWaySingle = 1; 
+	private static final int leeWayDouble = 2;
 	
 	String sender;
 	int bX, bY, pX, pY; //grid positions of batter and pitcher
@@ -121,6 +123,7 @@ public class GameServer extends Server<GameMessage>{
 	
 	private void processPlay(){
 		inningChange = false;
+		homeRun = false;
 		//if batter and pitcher choose exact same grid
 		if (bX == pX && bY == pY){
 			//Batting team hits a home run
@@ -133,10 +136,38 @@ public class GameServer extends Server<GameMessage>{
 		// if batter is within 1 squares away from hit
 		else if (bX >= pX-leeWaySingle && bX <= pX+leeWaySingle){ //Single
 			if (bY >= pY-leeWaySingle && bY <= pY+leeWaySingle){
-				//Update bases
-				updateBases(1);
-				changeBatter();
-				changePitcher();
+				 Random rand = new Random();
+
+				    // nextInt is normally exclusive of the top value,
+				    // so add 1 to make it inclusive
+			    int randomNum = rand.nextInt((100 - 0) + 1) + 0;
+
+			    if (randomNum < 60){
+			    	updateBases(1);
+			    	
+			    	//Update bases
+					changeBatter();
+					changePitcher();
+			    }
+			    else if (randomNum >= 60 && randomNum < 85){
+			    	updateBases(2);
+			    	
+			    	//Update bases
+					changeBatter();
+					changePitcher();
+			    }
+			    else{
+			    	outs++;
+					if (outs >= 3){ //Check if innings have to change
+						changeInning();
+					} else {
+						changeBatter();
+						pitChange = false;
+					}
+					//pitcher stays
+			    }
+			    
+				
 			} else{
 				//Update strikes
 				strikes++;
@@ -151,9 +182,9 @@ public class GameServer extends Server<GameMessage>{
 					//pitcher stays
 				} 
 			}
-		}
+		
 		// not within 1 squares --> no hit
-		else{
+		}else{
 			//Update strikes
 			strikes++;
 			if ((strikes >= 3)){
