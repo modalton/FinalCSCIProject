@@ -34,7 +34,7 @@ public class GameServer extends Server<GameMessage>{
 	
 	public GameServer(int port, int amount_of_players) {
 		super(port, amount_of_players);
-		inning = 0;
+		inning = 1;
 		base = 0;
 		scoreA = 0;
 		scoreB = 0;
@@ -247,8 +247,10 @@ public class GameServer extends Server<GameMessage>{
 		
 		inningChange = true;
 		
-		batterIndex = 0;
-		pitcherIndex = 0;
+		batterIndex = maxPlayers;
+		pitcherIndex = maxPlayers;
+		changeBatter();
+		changePitcher();
 		
 		for (int i = 0; i < 3; i++){ //Empty all the bases
 			onBase[i] = false; 
