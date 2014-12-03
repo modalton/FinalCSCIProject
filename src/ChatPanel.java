@@ -86,7 +86,7 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 			teamchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
 		}
 		if(temp.getRecipient().equals("group")){
-			groupchat.append("\n"+ temp.getUsername() + ":   "+ temp.getMessage());
+			groupchat.append("\n"+ temp.getTeam() + " - " + temp.getUsername() + ":   "+ temp.getMessage());
 		}
 		else{
 			
@@ -99,10 +99,10 @@ public class ChatPanel extends JPanel implements ClientProcessInterface<Message>
 		haveamessage = false;
 		String temp = userinput.getText();
 		if(chatview.getSelectedIndex() == 0){
-			return new Message(temp, messages_sent++, username, "group");
+			return new Message(temp, messages_sent++, username, "group", team_choice);
 		}
 		else{
-			return new Message(temp, messages_sent++, username, team_choice);
+			return new Message(temp, messages_sent++, username, team_choice, team_choice);
 		}
 		
 	}

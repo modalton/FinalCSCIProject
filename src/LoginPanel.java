@@ -16,6 +16,7 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 	JLabel loginFailed, accountCreated, accountNotCreated;
 	boolean hasmessage = false;
 	String username;
+	String team;
 	boolean creatingAccount = false;
 	JPanel cardPanel;
 	CardLayout cl;
@@ -134,7 +135,6 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 		// TODO Auto-generated method stub
 		System.out.println(object.desired_team + "  " + object.desired_username);
 		if(!object.success_login && !creatingAccount){
-			//System.out.println("name taken");
 			loginFailed.setVisible(true);
 			sendmessage.setEnabled(true);
 		} else if (!object.success_login && creatingAccount){
@@ -151,6 +151,8 @@ public class LoginPanel extends JPanel implements ClientProcessInterface<LoginMe
 			username = new String(object.desired_username);
 			cl.show(cardPanel, "GAME");
 		}
+		
+		team = teamchoice.getSelectedItem().toString();
 		
 		
 	}
