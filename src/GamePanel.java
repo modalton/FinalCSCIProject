@@ -378,14 +378,6 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		t.start();
 		
 		
-		sp.inningChange(inningStatement);
-		sp.batterStrike(object.strikes);
-		sp.batterOut(object.outs);
-		sp.addScore(object.scoreA, object.scoreB);
-		sp.repaint();
-	    sp.revalidate();
-		sp.updateUI();
-		
 		this.onFirst = object.onFirst;
 		this.onSecond = object.onSecond;
 		this.onThird = object.onThird;
