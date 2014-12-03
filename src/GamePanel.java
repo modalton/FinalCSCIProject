@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean isUp;
 	String batterSn, pitcherSn;
 	
+	JLabel myTurn;
+	
 	BatterGrid bg;
 	
 	JPanel test;
@@ -68,11 +70,17 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 /*		pitcher.start();
 		batter.start();*/
 		
+		myTurn = new JLabel ("YOUR TURN", SwingConstants.CENTER);
+		myTurn.setBounds(250,  30, 200, 20);
+		myTurn.setBackground(Color.LIGHT_GRAY);
+		myTurn.setForeground(Color.RED);
+		myTurn.setOpaque(true);
+		add(myTurn);
+		myTurn.setVisible(false);
 		
 		sp = new ScorePanel();
 		sp.setBounds(0, 0, 700, 30);
 		add(sp);
-		
 		
 		bg = new BatterGrid(this);
 		bg.setBounds(325, 325, 100, 100);
@@ -109,6 +117,65 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 			pitcher.start();
 			batter.start();
 
+			if (object.aBat){
+				aBatting = true;
+				if (isTeamA){
+					isBatting = true;
+				} else
+					isBatting = false;
+			} else {
+				aBatting = false;
+				if (isTeamA){
+					isBatting = false;
+				} else
+					isBatting = true;
+			} 
+			
+			this.batterSn = object.batterSn;
+			this.pitcherSn = object.pitcherSn;
+
+			if (isBatting){
+				if (this.username.equals(batterSn)){
+					bg.setEnabledHandlers(true);
+					isUp = true;
+					myTurn.setText("YOU'RE BATTING, " + batterSn);
+					myTurn.setBackground(Color.GREEN);
+					myTurn.setVisible(true);
+					repaint();
+					revalidate();
+					updateUI();
+				} else{
+					bg.setEnabledHandlers(false);
+					isUp = false;
+					myTurn.setText(batterSn + "'S BATTING");
+					myTurn.setBackground(Color.DARK_GRAY);
+					myTurn.setVisible(true);
+					repaint();
+					revalidate();
+					updateUI();
+				}
+			} else{
+				if (this.username.equals(pitcherSn)){
+					bg.setEnabledHandlers(true);
+					isUp = true;
+					myTurn.setText("YOU'RE PITCHING, " + pitcherSn);
+					myTurn.setBackground(Color.GREEN);
+					myTurn.setVisible(true);
+					repaint();
+					revalidate();
+					updateUI();
+				} else {
+					bg.setEnabledHandlers(false);
+					isUp = false;
+					myTurn.setText(pitcherSn + "'S PITCHING");
+					myTurn.setBackground(Color.DARK_GRAY);
+					myTurn.setVisible(true);
+					repaint();
+					revalidate();
+					updateUI();
+				}
+			}
+			
 			return;
 		}
 		
@@ -237,17 +304,48 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		} 
 		
 		this.batterSn = object.batterSn;
-		
+		this.pitcherSn = object.pitcherSn;
+
 		if (isBatting){
 			if (this.username.equals(batterSn)){
 				bg.setEnabledHandlers(true);
-			} else
+				isUp = true;
+				myTurn.setText("YOU'RE BATTING, " + batterSn);
+				myTurn.setBackground(Color.GREEN);
+				myTurn.setVisible(true);
+				repaint();
+				revalidate();
+				updateUI();
+			} else{
 				bg.setEnabledHandlers(false);
+				isUp = false;
+				myTurn.setText(batterSn + "'S BATTING");
+				myTurn.setBackground(Color.DARK_GRAY);
+				myTurn.setVisible(true);
+				repaint();
+				revalidate();
+				updateUI();
+			}
 		} else{
 			if (this.username.equals(pitcherSn)){
 				bg.setEnabledHandlers(true);
-			} else
+				isUp = true;
+				myTurn.setText("YOU'RE PITCHING, " + pitcherSn);
+				myTurn.setBackground(Color.GREEN);
+				myTurn.setVisible(true);
+				repaint();
+				revalidate();
+				updateUI();
+			} else {
 				bg.setEnabledHandlers(false);
+				isUp = false;
+				myTurn.setText(pitcherSn + "'S PITCHING");
+				myTurn.setBackground(Color.DARK_GRAY);
+				myTurn.setVisible(true);
+				repaint();
+				revalidate();
+				updateUI();
+			}
 		}
 		
 		System.out.println("Reached the end of the GamePlay process input!");
@@ -293,11 +391,5 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		firstMsg = false;
 		return theMsg;
 		
-	}
-	
-	
-	
-	
-	
-	
+	}	
 }
