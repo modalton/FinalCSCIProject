@@ -39,6 +39,8 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 	boolean isUp;
 	String batterSn, pitcherSn;
 	
+	String inningStatement;
+	
 	JLabel myTurn;
 	JLabel thePlay;
 	
@@ -260,7 +262,7 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 			updateUI();
 		}
 		
-		String inningStatement = "";
+		inningStatement = "";
 		
 		switch (object.inning){
 			case 1: 
@@ -357,7 +359,6 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		t.start();
 		
 		
-		
 		sp.inningChange(inningStatement);
 		sp.batterStrike(object.strikes);
 		sp.batterOut(object.outs);
@@ -375,11 +376,32 @@ public class GamePanel extends JPanel implements ClientProcessInterface<GameMess
 		System.out.println("onSecond = " + onSecond);
 		System.out.println("onThird = " + onThird);
 		System.out.println("****");
-		//if (this.onBase != null)
-			dp.baseChanged(onFirst, onSecond, onThird);
-		/*else {
-			System.out.println("ARG");
-		}*/
+
+		
+		Thread a = new Thread(new Runnable() {
+			public void run() {
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				sp.inningChange(inningStatement);
+				sp.batterStrike(object.strikes);
+				sp.batterOut(object.outs);
+				sp.addScore(object.scoreA, object.scoreB);
+				sp.repaint();
+			    sp.revalidate();
+				sp.updateUI();
+				dp.baseChanged(onFirst, onSecond, onThird);
+
+			}
+		});
+		a.start();
+		
+		
+
+	
 
 		remove(sp);
 		sp.setBounds(0, 0, 700, 30);

@@ -5,14 +5,15 @@ public class Message implements Serializable{
 	private String message; 
 	private String username;
 	private String recipient;
+	private String team;
 	int deleteme;
 	
-	public Message(String text, int number, String user, String recip){
+	public Message(String text, int number, String user, String recip, String t){
 		message = text;
 		deleteme = number;
 		username = user;
 		recipient = recip;
-		
+		team = t;
 	}
 	
 	public String getMessage(){
@@ -27,6 +28,9 @@ public class Message implements Serializable{
 		return recipient;
 	}
 
+	public String getTeam(){
+		return team;
+	}
 
 	
 
